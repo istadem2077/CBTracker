@@ -6,7 +6,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import TimeoutException as TE
 from time import ctime, time, sleep
+from selenium import webdriver
 import emailer
+import schoolcount
+
  # Initiate Chrome Browser
 def loginMySAT():
     driver.get("https://mysat.collegeboard.org/") # Login to website
@@ -40,7 +43,7 @@ def satreg():
         driver.find_element(By.XPATH, '//*[@id="continue-to-demographics-btn"]').click()
         sleep(5)
         WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="save-exit-demographics-btn"]'))).click()
-        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div[2]/div[2]/button[1]'))).click()
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div[2]/div[2]/button[1]'))).click() # SAT Registration. Get Started Button
         driver.find_element(By.XPATH, '//*[@id="terms-desc"]').send_keys(Keys.END)
         sleep(5)
         driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div[1]/div/div/div[2]/div/div/div/label/span').click() # Click the checkbox
@@ -48,31 +51,64 @@ def satreg():
         WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="testlocation-continue-button"]'))).click()
 
 
+def refreshTestCenter():
+    sleep(10)
+    if driver.title == "SAT Registration":
+        driver.refresh()
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div[2]/div[2]/button[1]'))).click() # SAT Registration. Get Started Button
+    findtestcenter()
+
+
 def chooseTestDate():
-    global may_6
-    global jun_3
     driver.execute_script("window.scrollTo(0,600)")
-    WebDriverWait(driver, 100).until(EC.element_to_be_clickable((By.ID, 'test-center-date-button-MAY-6'))).click()
-    print("May 6 checked: ", driver.find_element(By.ID, 'test-center-date-button-MAY-6').get_attribute('aria-current'))
-    WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="testdate-continue-button"]'))).click()
-    WebDriverWait(driver, 100).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div[1]/div/div/div/div[4]/div/div/div/div[1]/div/div/div[3]/div/div[3]/div/div/div[3]/button'))).click() # Find a test center
-    sleep(5)
-    driver.find_element(By.CLASS_NAME, 'toggle-btn').click()
-    may_6 = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div[1]/div/div/div/div[4]/div/div/div/div[1]/div/div/div[3]/div/div[3]/div/div/div[4]/div[2]/div[1]').text # Save text
-    print("May 6: ", may_6)
-    sleep(1)
-    driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div[1]/div/div/div/div[4]/div/div/div/div[2]/div/div[1]/div/a').click() # Go back to choosing test date
-    driver.execute_script("window.scrollTo(0,600)")
-    WebDriverWait(driver, 100).until(EC.element_to_be_clickable((By.ID, "test-center-date-button-JUN-3"))).click()
+    WebDriverWait(driver, 100).until(EC.element_to_be_clickable((By.ID, "test-center-date-button-JUN-3"))).click() # No need for May 6, deadline passed
     print("Jun 3 checked: ", driver.find_element(By.ID, 'test-center-date-button-JUN-3').get_attribute('aria-current'))
-    WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="testdate-continue-button"]'))).click()
-    WebDriverWait(driver, 100).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div[1]/div/div/div/div[4]/div/div/div/div[1]/div/div/div[3]/div/div[3]/div/div/div[3]/button'))).click() # Find a test center
+    WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="testdate-continue-button"]'))).click()
+
+
+def findtestcenter():
+    global jun_3
+    WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div[1]/div/div/div/div[4]/div/div/div/div[1]/div/div/div[3]/div/div[3]/div/div/div[3]/button'))).click() # Find a test center
     sleep(5)
-    driver.find_element(By.CLASS_NAME, 'toggle-btn').click()
+    #driver.find_element(By.CLASS_NAME, 'toggle-btn').click()
     jun_3 = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div[1]/div/div/div/div[4]/div/div/div/div[1]/div/div/div[3]/div/div[3]/div/div/div[4]/div[2]/div[1]').text # Save text
     print("June 3: ", jun_3)
-    
 
+
+def checkSchools(counter: str):
+    Messsage = []
+    if ((int)(counter) > 0):
+        print(driver.find_element(By.ID, 'undefined_next').get_attribute("aria-disabled"))
+        while (driver.find_element(By.ID,'undefined_next').get_attribute("aria-disabled") != "true"):
+            table = driver.find_element(By.CLASS_NAME, 'cb-table').find_element(By.TAG_NAME, 'tbody').find_elements(By.TAG_NAME, 'tr')
+            for tr in table:
+                school_name = tr.find_element(By.CLASS_NAME, 'test-center-name').text
+                seat_available = tr.find_element(By.CLASS_NAME, 'seat-label').text
+                Messsage.append("{0} : {1}\n".format(school_name, seat_available))
+            driver.find_element(By.CLASS_NAME, 'cb-right').click()
+        table = driver.find_element(By.CLASS_NAME, 'cb-table').find_element(By.TAG_NAME, 'tbody').find_elements(By.TAG_NAME, 'tr')
+        for tr in table:
+            school_name = tr.find_element(By.CLASS_NAME, 'test-center-name').text
+            seat_available = tr.find_element(By.CLASS_NAME, 'seat-label').text
+            Messsage.append("{0} : {1}\n".format(school_name, seat_available))
+        print(Messsage)
+        #for tr in table:
+        #     # Increase after checking every single school.
+        #    school_name = tr.find_element(By.CLASS_NAME, 'test-center-name').text
+        #    seat_available = tr.find_element(By.CLASS_NAME, 'seat-label').text
+        #    Messsage.append("{0} : {1}\n".format(school_name, seat_available))
+        #    print(Messsage)
+        #    if ((int)(counter) > 5 and cntr % 5 == 0):
+        #        driver.find_element(By.CLASS_NAME, 'cb-right').click()
+        #        table = driver.find_element(By.CLASS_NAME, 'cb-table').find_element(By.TAG_NAME, 'tbody').find_elements(By.TAG_NAME, 'tr')
+        #        tr = table[0]
+        #        continue
+        #    cntr += 1
+        emailer.sendmail("itagizade@yahoo.com", f"Last update: {ctime(time())}", Messsage)
+        print("Email sent, sleeping...")
+
+#op = webdriver.ChromeOptions()
+#op.add_argument()
 while(1):
     try:
         driver = WD.Chrome()
@@ -82,14 +118,20 @@ while(1):
         satreg()
         print("Choosing test date:")
         chooseTestDate()
-        driver.quit()
-        emailer.sendmail("itagizade@yahoo.com", f"Last update: {ctime(time())}", f"May 6: {may_6}\n June 3: {jun_3}")
-        print("Email sent, sleeping...")
+        print("Finding test centers")
+        findtestcenter()
+        checkSchools(schoolcount.stripresult(jun_3))
+        while(1): # Infinite loop which breaks if an exception appears
+            try:
+                refreshTestCenter()
+            except:
+                break
+            else:
+                checkSchools(schoolcount.stripresult(jun_3))
+                sleep(10) # Add breaktime of 10 seconds, to avoid CollegeBoard banning IP address
+        
         sleep(60)
         print("Restarting the loop")
-    except:
+    except TE:
         print("Browser dead <3 starting all over")
         continue
-
-
-
