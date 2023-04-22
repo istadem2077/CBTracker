@@ -106,11 +106,11 @@ def checkSchools(counter: str):
     previous = (int)(schoolcount.stripresult(jun_3))
     
 
-#op = webdriver.ChromeOptions()
-#op.add_argument()
+op = webdriver.ChromeOptions()
+op.add_argument("--headless")
 while(1):
     try:
-        driver = WD.Chrome()
+        driver = WD.Chrome(options=op)
         print("Logging in")
         loginMySAT()
         print("Entering registration")
@@ -127,7 +127,7 @@ while(1):
                 break
             else:
                 checkSchools(schoolcount.stripresult(jun_3))
-                sleep(10) # Add breaktime of 10 seconds, to avoid CollegeBoard banning IP address
+                sleep(2) # Add breaktime of 10 seconds, to avoid CollegeBoard banning IP address
         
         sleep(60)
         print("Restarting the loop")
