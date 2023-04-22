@@ -7,7 +7,6 @@ from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import TimeoutException as TE
 from time import ctime, time, sleep
 from selenium import webdriver
-import emailer
 import tgmessage
 import schoolcount
 
@@ -78,7 +77,7 @@ def findtestcenter():
 previous = 0
 def checkSchools(counter: str):
     global previous
-    Message = []
+    Message = [f"Last update: {ctime(time())}\n\n"]
     if ((int)(counter) > 0):
         print(driver.find_element(By.ID, 'undefined_next').get_attribute("aria-disabled"))
         while (driver.find_element(By.ID,'undefined_next').get_attribute("aria-disabled") != "true"):
@@ -97,8 +96,6 @@ def checkSchools(counter: str):
         Message = "".join(Message)
         print(Message)
         if previous == 0:
-            emailer.sendmail("ruciyev177@gmail.com", f"Last update: {ctime(time())}", Message)
-            Message = "".join(Message)
             print(tgmessage.telegram_sendmessage(976908358, Message))
             print(tgmessage.telegram_sendmessage(5670908383, Message))
             print(tgmessage.telegram_sendmessage(584098198, Message))
