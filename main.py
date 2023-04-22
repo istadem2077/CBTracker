@@ -8,6 +8,7 @@ from selenium.common.exceptions import TimeoutException as TE
 from time import ctime, time, sleep
 from selenium import webdriver
 import emailer
+import tgmessage
 import schoolcount
 
  # Initiate Chrome Browser
@@ -70,13 +71,14 @@ def findtestcenter():
     global jun_3
     WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div[1]/div/div/div/div[4]/div/div/div/div[1]/div/div/div[3]/div/div[3]/div/div/div[3]/button'))).click() # Find a test center
     sleep(5)
-    #driver.find_element(By.CLASS_NAME, 'toggle-btn').click()
+    driver.find_element(By.CLASS_NAME, 'toggle-btn').click()
     jun_3 = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div[1]/div/div/div/div[4]/div/div/div/div[1]/div/div/div[3]/div/div[3]/div/div/div[4]/div[2]/div[1]').text # Save text
     print("June 3: ", jun_3)
 
-
+previous = 0
 def checkSchools(counter: str):
-    Messsage = []
+    global previous
+    Message = []
     if ((int)(counter) > 0):
         print(driver.find_element(By.ID, 'undefined_next').get_attribute("aria-disabled"))
         while (driver.find_element(By.ID,'undefined_next').get_attribute("aria-disabled") != "true"):
@@ -84,28 +86,25 @@ def checkSchools(counter: str):
             for tr in table:
                 school_name = tr.find_element(By.CLASS_NAME, 'test-center-name').text
                 seat_available = tr.find_element(By.CLASS_NAME, 'seat-label').text
-                Messsage.append("{0} : {1}\n".format(school_name, seat_available))
+                Message.append("{0} : {1}\n\n".format(school_name, seat_available))
             driver.find_element(By.CLASS_NAME, 'cb-right').click()
         table = driver.find_element(By.CLASS_NAME, 'cb-table').find_element(By.TAG_NAME, 'tbody').find_elements(By.TAG_NAME, 'tr')
         for tr in table:
             school_name = tr.find_element(By.CLASS_NAME, 'test-center-name').text
             seat_available = tr.find_element(By.CLASS_NAME, 'seat-label').text
-            Messsage.append("{0} : {1}\n".format(school_name, seat_available))
-        print(Messsage)
-        #for tr in table:
-        #     # Increase after checking every single school.
-        #    school_name = tr.find_element(By.CLASS_NAME, 'test-center-name').text
-        #    seat_available = tr.find_element(By.CLASS_NAME, 'seat-label').text
-        #    Messsage.append("{0} : {1}\n".format(school_name, seat_available))
-        #    print(Messsage)
-        #    if ((int)(counter) > 5 and cntr % 5 == 0):
-        #        driver.find_element(By.CLASS_NAME, 'cb-right').click()
-        #        table = driver.find_element(By.CLASS_NAME, 'cb-table').find_element(By.TAG_NAME, 'tbody').find_elements(By.TAG_NAME, 'tr')
-        #        tr = table[0]
-        #        continue
-        #    cntr += 1
-        emailer.sendmail("itagizade@yahoo.com", f"Last update: {ctime(time())}", Messsage)
-        print("Email sent, sleeping...")
+            Message.append("{0} : {1}\n".format(school_name, seat_available))
+        print(previous)
+        Message = "".join(Message)
+        print(Message)
+        if previous == 0:
+            emailer.sendmail("ruciyev177@gmail.com", f"Last update: {ctime(time())}", Message)
+            Message = "".join(Message)
+            print(tgmessage.telegram_sendmessage(976908358, Message))
+            print(tgmessage.telegram_sendmessage(5670908383, Message))
+            print(tgmessage.telegram_sendmessage(584098198, Message))
+            print("Email sent, sleeping...")
+    previous = (int)(schoolcount.stripresult(jun_3))
+    
 
 #op = webdriver.ChromeOptions()
 #op.add_argument()

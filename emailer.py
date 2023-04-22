@@ -1,4 +1,4 @@
 import yagmail
 def sendmail(to: str, head: str, contents):
     yag = yagmail.SMTP("iskatag2006@gmail.com", oauth2_file="~/credentials.json")
-    yag.send("itagizade@yahoo.com", head, contents)
+    yag.send(to, head, contents)
