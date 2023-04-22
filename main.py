@@ -24,7 +24,7 @@ def loginMySAT():
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="okta-signin-password"]')))
     elementIdpPasswd = driver.find_element(By.XPATH, '//*[@id="okta-signin-password"]') # Identify Password input field
     elementIdpPasswd.clear()
-    elementIdpPasswd.send_keys("Vv123456") # Enter required password TODO: remove password before pushing to GitHub!!!!!!
+    elementIdpPasswd.send_keys("Vv123456!") # Enter required password TODO: remove password before pushing to GitHub!!!!!!
     driver.find_element(By.XPATH, '//*[@id="okta-signin-submit"]').click() # Trigger click event to submit password and email
     #print(driver.title)
 
