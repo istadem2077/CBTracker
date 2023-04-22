@@ -19,6 +19,7 @@ def loginMySAT():
     elementIdpUsername = driver.find_element(By.XPATH, '//*[@id="idp-discovery-username"]') # Identify username inout field
     elementIdpUsername.clear()
     elementIdpUsername.send_keys("alibbas177@gmail.com") # Enter required email, to be prompted in next update if required
+    driver.find_element(By.ID, "onetrust-accept-btn-handler")
     driver.find_element(By.XPATH, '//*[@id="idp-discovery-submit"]').click() # Trigger click event on Next "submit" type button after entering email
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="okta-signin-password"]')))
     elementIdpPasswd = driver.find_element(By.XPATH, '//*[@id="okta-signin-password"]') # Identify Password input field
