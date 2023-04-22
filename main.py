@@ -9,12 +9,14 @@ from time import ctime, time, sleep
 from selenium import webdriver
 import tgmessage
 import schoolcount
+from xvfbwrapper import Xvfb
 
  # Initiate Chrome Browser
 def loginMySAT():
     driver.get("https://mysat.collegeboard.org/") # Login to website
     driver.refresh()
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/main/div/div/div/div/div/div/div/div/div/a'))).click() # Click the first continue button
+    sleep(2)
     elementIdpUsername = driver.find_element(By.XPATH, '//*[@id="idp-discovery-username"]') # Identify username inout field
     elementIdpUsername.clear()
     elementIdpUsername.send_keys("alibbas177@gmail.com") # Enter required email, to be prompted in next update if required
@@ -104,32 +106,33 @@ def checkSchools(counter: str):
     
 
 op = webdriver.ChromeOptions()
-op.add_argument("--headless")
+#op.add_argument("--headless")
 op.add_argument("--no-sandbox")
 op.add_argument("--disable-dev-shm-usage")
-while(1):
-    try:
-        driver = WD.Chrome(options=op)
-        print("Logging in")
-        loginMySAT()
-        print("Entering registration")
-        satreg()
-        print("Choosing test date:")
-        chooseTestDate()
-        print("Finding test centers")
-        findtestcenter()
-        checkSchools(schoolcount.stripresult(jun_3))
-        while(1): # Infinite loop which breaks if an exception appears
-            try:
-                refreshTestCenter()
-            except:
-                break
-            else:
-                checkSchools(schoolcount.stripresult(jun_3))
-                sleep(2) # Add breaktime of 10 seconds, to avoid CollegeBoard banning IP address
-        
-        sleep(60)
-        print("Restarting the loop")
-    except TE:
-        print("Browser dead <3 starting all over")
-        continue
+with Xvfb() as xvfb:
+    while(1):
+        try:
+            driver = WD.Chrome(options=op)
+            print("Logging in")
+            loginMySAT()
+            print("Entering registration")
+            satreg()
+            print("Choosing test date:")
+            chooseTestDate()
+            print("Finding test centers")
+            findtestcenter()
+            checkSchools(schoolcount.stripresult(jun_3))
+            while(1): # Infinite loop which breaks if an exception appears
+                try:
+                    refreshTestCenter()
+                except:
+                    break
+                else:
+                    checkSchools(schoolcount.stripresult(jun_3))
+                    sleep(2) # Add breaktime of 10 seconds, to avoid CollegeBoard banning IP address
+            
+            sleep(60)
+            print("Restarting the loop")
+        except TE:
+            print("Browser dead <3 starting all over")
+            continue
