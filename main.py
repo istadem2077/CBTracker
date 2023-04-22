@@ -87,7 +87,7 @@ def checkSchools(counter: str):
             for tr in table:
                 school_name = tr.find_element(By.CLASS_NAME, 'test-center-name').text
                 seat_available = tr.find_element(By.CLASS_NAME, 'seat-label').text
-                Message.append("{0} : {1}\n\n".format(school_name, seat_available))
+                Message.append("{0} : {1}\n".format(school_name, seat_available))
             driver.find_element(By.CLASS_NAME, 'cb-right').click()
         table = driver.find_element(By.CLASS_NAME, 'cb-table').find_element(By.TAG_NAME, 'tbody').find_elements(By.TAG_NAME, 'tr')
         for tr in table:
@@ -95,7 +95,7 @@ def checkSchools(counter: str):
             seat_available = tr.find_element(By.CLASS_NAME, 'seat-label').text
             Message.append("{0} : {1}\n".format(school_name, seat_available))
         print(previous)
-        Message = "".join(Message)
+        Message = "\n".join(Message)
         print(Message)
         if previous == 0:
             print(tgmessage.telegram_sendmessage(976908358, Message))
@@ -132,6 +132,6 @@ while(1):
             
         #sleep(60)
         print("Restarting the loop")
-    except TE:
+    except:
         print("Browser dead <3 starting all over")
         continue
