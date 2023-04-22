@@ -9,7 +9,6 @@ from time import ctime, time, sleep
 from selenium import webdriver
 import tgmessage
 import schoolcount
-from xvfbwrapper import Xvfb
 
  # Initiate Chrome Browser
 def loginMySAT():
@@ -106,33 +105,32 @@ def checkSchools(counter: str):
     
 
 op = webdriver.ChromeOptions()
-#op.add_argument("--headless")
+op.add_argument("--headless")
 op.add_argument("--no-sandbox")
 op.add_argument("--disable-dev-shm-usage")
-with Xvfb() as xvfb:
-    while(1):
-        try:
-            driver = WD.Chrome(options=op)
-            print("Logging in")
-            loginMySAT()
-            print("Entering registration")
-            satreg()
-            print("Choosing test date:")
-            chooseTestDate()
-            print("Finding test centers")
-            findtestcenter()
-            checkSchools(schoolcount.stripresult(jun_3))
-            while(1): # Infinite loop which breaks if an exception appears
-                try:
-                    refreshTestCenter()
-                except:
-                    break
-                else:
-                    checkSchools(schoolcount.stripresult(jun_3))
-                    sleep(2) # Add breaktime of 10 seconds, to avoid CollegeBoard banning IP address
-            
-            sleep(60)
-            print("Restarting the loop")
-        except TE:
-            print("Browser dead <3 starting all over")
-            continue
+while(1):
+    try:
+        driver = WD.Chrome(options=op)
+        print("Logging in")
+        loginMySAT()
+        print("Entering registration")
+        satreg()
+        print("Choosing test date:")
+        chooseTestDate()
+        print("Finding test centers")
+        findtestcenter()
+        checkSchools(schoolcount.stripresult(jun_3))
+        while(1): # Infinite loop which breaks if an exception appears
+            try:
+                refreshTestCenter()
+            except:
+                break
+            else:
+                checkSchools(schoolcount.stripresult(jun_3))
+                sleep(2) # Add breaktime of 10 seconds, to avoid CollegeBoard banning IP address
+        
+        sleep(60)
+        print("Restarting the loop")
+    except TE:
+        print("Browser dead <3 starting all over")
+        continue
