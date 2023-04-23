@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import TimeoutException as TE
+from selenium.common.exceptions import TimeoutException, NoSuchElementException, ElementClickInterceptedException
 from time import ctime, time, sleep
 from selenium import webdriver
 import tgmessage
@@ -19,14 +19,19 @@ def loginMySAT():
     elementIdpUsername = driver.find_element(By.XPATH, '//*[@id="idp-discovery-username"]') # Identify username inout field
     elementIdpUsername.clear()
     elementIdpUsername.send_keys("aibragim008@gmail.com") # Enter required email, to be prompted in next update if required
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler"))).click()
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="idp-discovery-submit"]'))).click() # Trigger click event on Next "submit" type button after entering email
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="okta-signin-password"]')))
-    elementIdpPasswd = driver.find_element(By.XPATH, '//*[@id="okta-signin-password"]') # Identify Password input field
-    elementIdpPasswd.clear()
-    elementIdpPasswd.send_keys("Vv123456!") # Enter required password TODO: remove password before pushing to GitHub!!!!!!
-    driver.find_element(By.XPATH, '//*[@id="okta-signin-submit"]').click() # Trigger click event to submit password and email
-    #print(driver.title)
+    
+    try:
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="idp-discovery-submit"]'))).click() # Trigger click event on Next "submit" type button after entering email
+    except ElementClickInterceptedException:
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler"))).click()
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="idp-discovery-submit"]'))).click() # Trigger click event on Next "submit" type button after entering email
+    else:
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="okta-signin-password"]')))
+        elementIdpPasswd = driver.find_element(By.XPATH, '//*[@id="okta-signin-password"]') # Identify Password input field
+        elementIdpPasswd.clear()
+        elementIdpPasswd.send_keys("Vv123456!") # Enter required password TODO: remove password before pushing to GitHub!!!!!!
+        driver.find_element(By.XPATH, '//*[@id="okta-signin-submit"]').click() # Trigger click event to submit password and email
+        #print(driver.title)
 
 
 def satreg():
@@ -34,7 +39,7 @@ def satreg():
     WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="qc-id-header-register-button"]'))).click()
     try:
         WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div/div[2]/div[2]/button'))).click()
-    except TE:
+    except TimeoutException:
         print("reloading")
         driver.get("https://mysat.collegeboard.org/dashboard")
         satreg()
@@ -74,7 +79,7 @@ def findtestcenter():
     sleep(5)
     driver.find_element(By.CLASS_NAME, 'toggle-btn').click()
     jun_3 = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div[1]/div/div/div/div[4]/div/div/div/div[1]/div/div/div[3]/div/div[3]/div/div/div[4]/div[2]/div[1]').text # Save text
-    print("June 3: ", jun_3)
+    print("June 3: {0}, Checked: {1}".format(jun_3, ctime(time())))
 
 previous = 0
 def checkSchools(counter: str):
@@ -106,9 +111,9 @@ def checkSchools(counter: str):
     
 
 op = webdriver.ChromeOptions()
-op.add_argument("--headless")
-op.add_argument("--no-sandbox")
-op.add_argument("--disable-dev-shm-usage")
+#op.add_argument("--headless")
+#op.add_argument("--no-sandbox")
+#op.add_argument("--disable-dev-shm-usage")
 while(1):
     try:
         driver = WD.Chrome(options=op)
@@ -132,6 +137,12 @@ while(1):
             
         #sleep(60)
         print("Restarting the loop")
-    except:
-        print("Browser dead <3 starting all over")
+    except TimeoutException:
+        print(TimeoutException)
+        continue
+    except NoSuchElementException:
+        print(NoSuchElementException)
+        continue
+    except ElementClickInterceptedException:
+        print(ElementClickInterceptedException)
         continue
