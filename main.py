@@ -111,7 +111,7 @@ def checkSchools(counter: str):
     
 
 op = webdriver.ChromeOptions()
-op.add_argument("--headless")
+#op.add_argument("--headless")
 op.add_argument("--no-sandbox")
 #op.add_argument("--disable-dev-shm-usage")
 while(1):
@@ -137,9 +137,9 @@ while(1):
             
         #sleep(60)
         print("Restarting the loop")
-    except TimeoutException:
-        print(TimeoutException)
-        continue
+    #except TimeoutException:
+    #    print(TimeoutException)
+    #    continue
     except NoSuchElementException:
         print(NoSuchElementException)
         continue
