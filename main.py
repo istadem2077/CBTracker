@@ -145,9 +145,6 @@ while(1):
     #except TimeoutException:
     #    print(TimeoutException)
     #    continue
-    except NoSuchElementException:
-        print(NoSuchElementException)
-        continue
     except ElementClickInterceptedException:
         print(ElementClickInterceptedException)
         continue
