@@ -116,7 +116,7 @@ def checkSchools(counter: str):
     
 
 op = webdriver.ChromeOptions()
-op.add_argument("--headless")
+#op.add_argument("--headless")
 op.add_argument("--no-sandbox")
 #op.add_argument("--disable-dev-shm-usage")
 while(1):
