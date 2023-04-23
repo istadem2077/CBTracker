@@ -65,7 +65,7 @@ def satreg():
 
 
 def refreshTestCenter():
-    sleep(10)
+    sleep(2)
     if driver.title == "SAT Registration":
         driver.refresh()
     WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div[2]/div[2]/button[1]'))).click() # SAT Registration. Get Started Button
@@ -82,7 +82,7 @@ def chooseTestDate():
 def findtestcenter():
     global jun_3
     WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div[1]/div/div/div/div[4]/div/div/div/div[1]/div/div/div[3]/div/div[3]/div/div/div[3]/button'))).click() # Find a test center
-    sleep(5)
+    sleep(2)
     driver.find_element(By.CLASS_NAME, 'toggle-btn').click()
     jun_3 = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div[1]/div/div/div/div[4]/div/div/div/div[1]/div/div/div[3]/div/div[3]/div/div/div[4]/div[2]/div[1]').text # Save text
     print("June 3: {0}, Checked: {1}".format(jun_3, ctime(time())))
@@ -117,9 +117,9 @@ def checkSchools(counter: str):
     
 
 op = webdriver.ChromeOptions()
-#op.add_argument("--headless")
+op.add_argument("--headless")
 op.add_argument("--no-sandbox")
-#op.add_argument("--disable-dev-shm-usage")
+op.add_argument("--disable-dev-shm-usage")
 while(1):
     try:
         driver = WD.Chrome(options=op)
@@ -138,14 +138,12 @@ while(1):
             except:
                 break
             else:
-                checkSchools(schoolcount.stripresult(jun_3))
-                sleep(2) # Add breaktime of 10 seconds, to avoid CollegeBoard banning IP address
-            
+                checkSchools(schoolcount.stripresult(jun_3))            
         #sleep(60)
         print("Restarting the loop")
-    #except TimeoutException:
-    #    print(TimeoutException)
-    #    continue
-    except ElementClickInterceptedException:
-        print(ElementClickInterceptedException)
+    except TimeoutException:
+        print(TimeoutException)
         continue
+    #except ElementClickInterceptedException:
+    #    print(ElementClickInterceptedException)
+    #    continue
