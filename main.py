@@ -139,6 +139,7 @@ while(1):
         print("Restarting the loop")
     except TimeoutException:
         print(TimeoutException)
+        print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {TimeoutException}"))
         continue
     #except ElementClickInterceptedException:
     #    print(ElementClickInterceptedException)
