@@ -107,6 +107,7 @@ def checkSchools(counter: str):
             print(tgmessage.telegram_sendmessage(976908358, Message))
             print(tgmessage.telegram_sendmessage(5670908383, Message))
             print(tgmessage.telegram_sendmessage(584098198, Message))
+            print(tgmessage.telegram_sendmessage(853226047, Message))
             print("Email sent, sleeping...")
     previous = (int)(schoolcount.stripresult(jun_3))
     
