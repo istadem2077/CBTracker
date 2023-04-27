@@ -117,6 +117,7 @@ op = webdriver.ChromeOptions()
 op.add_argument("--disable-browser-side-navigation")
 op.add_argument("--no-sandbox")
 op.add_argument("--disable-dev-shm-usage")
+<<<<<<< HEAD
 counter = 0
 #logincreds = [[]] # logincreds[iterator][0] - email; logincreds[iterator][1]
 iterator = 0
@@ -148,6 +149,33 @@ while(1):
     #        iterator += 1
     #        print(tgmessage.telegram_sendmessage(5670908383, f"Login changed, emails left: {len(logincreds)}"))
     #    continue
+=======
+while(1):
+    try:
+        driver = WD.Chrome(options=op)
+        print("Logging in")
+        loginMySAT()
+        print("Entering registration")
+        satreg()
+        print("Choosing test date:")
+        chooseTestDate()
+        print("Finding test centers")
+        findtestcenter()
+        checkSchools(schoolcount.stripresult(jun_3))
+        while(1): # Infinite loop which breaks if an exception appears
+            try:
+                refreshTestCenter()
+            except:
+                break
+            else:
+                checkSchools(schoolcount.stripresult(jun_3))            
+        #sleep(60)
+        print("Restarting the loop")
+    except TimeoutException:
+        print(TimeoutException)
+        print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {TimeoutException}"))
+        continue
+>>>>>>> parent of 7a0aa34 (Update main.py)
     #except ElementClickInterceptedException:
     #    print(ElementClickInterceptedException)
     #    continue
