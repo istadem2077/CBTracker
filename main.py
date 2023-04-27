@@ -145,6 +145,10 @@ while(1):
         print(TimeoutException)
         print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {TimeoutException}"))
         continue
+    except:
+        print("Unknown error")
+        print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, Unknown error occured, check server!"))
+        continue
     #except ElementClickInterceptedException:
     #    print(ElementClickInterceptedException)
     #    continue
