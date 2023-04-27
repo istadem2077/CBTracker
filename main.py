@@ -45,8 +45,8 @@ def satreg():
     except ElementClickInterceptedException:
         WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler"))).click()
         WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div/div[2]/div[2]/button'))).click()
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="graddate-save-button"]'))).click()
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="grade-save-button"]'))).click()
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="qc-id-personalinfo-button-graddateconfirm"]'))).click()
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="qc-id-personalinfo-button-gradeconfirm"]'))).click()
     sleep(5)
     WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="continue-to-demographics-btn"]'))).click()
     sleep(5)
@@ -117,39 +117,9 @@ op = webdriver.ChromeOptions()
 op.add_argument("--disable-browser-side-navigation")
 op.add_argument("--no-sandbox")
 op.add_argument("--disable-dev-shm-usage")
-<<<<<<< HEAD
 counter = 0
 #logincreds = [[]] # logincreds[iterator][0] - email; logincreds[iterator][1]
 iterator = 0
-while(1):
-    driver = WD.Chrome(options=op)
-    print("Logging in")
-    loginMySAT()
-    print("Entering registration")
-    satreg()
-    print("Choosing test date:")
-    chooseTestDate()
-    print("Finding test centers")
-    findtestcenter()
-    checkSchools(schoolcount.stripresult(jun_3))
-    while(1): # Infinite loop which breaks if an exception appears
-        try:
-            refreshTestCenter()
-        except:
-            break
-        else:
-            checkSchools(schoolcount.stripresult(jun_3))            
-    #sleep(60)
-    print("Restarting the loop")
-    #except TimeoutException:
-    #    print(TimeoutException)
-    #    print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {TimeoutException}"))
-    #    if driver.page_source.__contains__("Unable to sign in"):
-    #        logincreds.pop(iterator)
-    #        iterator += 1
-    #        print(tgmessage.telegram_sendmessage(5670908383, f"Login changed, emails left: {len(logincreds)}"))
-    #    continue
-=======
 while(1):
     try:
         driver = WD.Chrome(options=op)
@@ -175,7 +145,6 @@ while(1):
         print(TimeoutException)
         print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {TimeoutException}"))
         continue
->>>>>>> parent of 7a0aa34 (Update main.py)
     #except ElementClickInterceptedException:
     #    print(ElementClickInterceptedException)
     #    continue
