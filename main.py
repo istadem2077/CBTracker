@@ -108,6 +108,9 @@ def checkSchools(counter: str):
             print(tgmessage.telegram_sendmessage(5670908383, Message))
             print(tgmessage.telegram_sendmessage(584098198, Message))
             print(tgmessage.telegram_sendmessage(853226047, Message))
+            print(tgmessage.telegram_sendmessage(1278150481, Message))
+            print(tgmessage.telegram_sendmessage(809899348, Message))
+            print(tgmessage.telegram_sendmessage(853226047, Message))
             print("Email sent, sleeping...")
     previous = (int)(schoolcount.stripresult(jun_3))
     
@@ -149,6 +152,3 @@ while(1):
         print("Unknown error")
         print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, Unknown error occured, check server!"))
         continue
-    #except ElementClickInterceptedException:
-    #    print(ElementClickInterceptedException)
-    #    continue
