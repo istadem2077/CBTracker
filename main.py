@@ -111,6 +111,7 @@ def checkSchools(counter: str):
             print(tgmessage.telegram_sendmessage(1278150481, Message))
             print(tgmessage.telegram_sendmessage(809899348, Message))
             print(tgmessage.telegram_sendmessage(853226047, Message))
+            print(tgmessage.telegram_sendmessage(716930078, Message))
             print("Email sent, sleeping...")
     previous = (int)(schoolcount.stripresult(jun_3))
     
@@ -147,8 +148,10 @@ while(1):
     except TimeoutException:
         print(TimeoutException)
         print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {TimeoutException}"))
+        driver.quit()
         continue
-    except:
-        print("Unknown error")
-        print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, Unknown error occured, check server!"))
-        continue
+    #except:
+     #   print("Unknown error")
+      #  print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, Unknown error occured, check server!"))
+       # driver.quit()
+        #continue
