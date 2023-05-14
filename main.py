@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, ElementClickInterceptedException
 from time import ctime, time, sleep
+import traceback
 from selenium import webdriver
 import tgmessage
 import schoolcount
@@ -150,8 +151,8 @@ while(1):
         print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {TimeoutException}"))
         driver.quit()
         continue
-    #except:
-     #   print("Unknown error")
-      #  print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, Unknown error occured, check server!"))
-       # driver.quit()
-        #continue
+    except:
+        print("Unknown error")
+        print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, ```{traceback.format_exc()}```"))
+        driver.quit()
+        continue
