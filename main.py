@@ -70,7 +70,7 @@ def refreshTestCenter():
 def chooseTestDate():
     driver.execute_script("window.scrollTo(0,600)")
     WebDriverWait(driver, 100).until(EC.element_to_be_clickable((By.ID, "qc-id-selectdatecenter-testdate-button-JUN-3"))).click() # No need for May 6, deadline passed
-    print("Jun 3 checked: ", driver.find_element(By.ID, 'test-center-date-button-JUN-3').get_attribute('aria-current'))
+    print("Jun 3 checked: ", driver.find_element(By.ID, 'qc-id-selectdatecenter-testdate-button-JUN-3').get_attribute('aria-current'))
     WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="testdate-continue-button"]'))).click()
 
 
