@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, ElementClickInterceptedException
 from time import ctime, time, sleep
 import traceback
-from selenium import webdriver
+import threading as thrd
 import tgmessage
 import schoolcount
 # from xvfbwrapper import Xvfb
@@ -68,25 +68,25 @@ def refreshTestCenter():
     findtestcenter()
 
 
-def chooseTestDate():
+def chooseTestDate(test_date):
     driver.execute_script("window.scrollTo(0,600)")
-    WebDriverWait(driver, 100).until(EC.element_to_be_clickable((By.ID, "qc-id-selectdatecenter-testdate-button-AUG-26"))).click() # No need for May 6, deadline passed
-    print("Aug 26 checked: ", driver.find_element(By.ID, 'qc-id-selectdatecenter-testdate-button-AUG-26').get_attribute('aria-current'))
+    WebDriverWait(driver, 100).until(EC.element_to_be_clickable((By.ID, f"qc-id-selectdatecenter-testdate-button-{test_date}"))).click() # No need for May 6, deadline passed
+    print(f"{test_date} checked: ", driver.find_element(By.ID, f'qc-id-selectdatecenter-testdate-button-{test_date}').get_attribute('aria-current'))
     WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="testdate-continue-button"]'))).click()
 
 
-def findtestcenter():
+def findtestcenter(test_date):
     global jun_3
     WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.ID, 'qc-id-selectdatecenter-testcenter-international-button-search'))).click() # Find a test center
     sleep(2)
     driver.find_element(By.CLASS_NAME, 'toggle-btn').click()
     jun_3 = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div[1]/div/div/div/div[4]/div/div/div/div[1]/div/div/div[3]/div/div[3]/div/div/div[4]/div[2]/div[1]').text # Save text
-    print("June 3: {0}, Checked: {1}".format(jun_3, ctime(time())))
+    print("{0}: {1}, Checked: {2}".format(test_date ,jun_3, ctime(time())))
 
 previous = 0
-def checkSchools(counter: str):
+def checkSchools(counter: str, test_date):
     global previous
-    Message = [f"August 26\nLast update: {ctime(time())}\n\n"]
+    Message = [f"{test_date}\nLast update: {ctime(time())}\n\n"]
     if ((int)(counter) > 0):
         print(driver.find_element(By.ID, 'undefined_next').get_attribute("aria-disabled"))
         while (driver.find_element(By.ID,'undefined_next').get_attribute("aria-disabled") != "true"):
@@ -125,35 +125,47 @@ op.add_argument("--disable-dev-shm-usage")
 counter = 0
 #logincreds = [[]] # logincreds[iterator][0] - email; logincreds[iterator][1]
 iterator = 0
-while(1):
-    try:
-        driver = WD.Chrome(options=op)
-        print("Logging in")
-        loginMySAT()
-        print("Entering registration")
-        satreg()
-        print("Choosing test date:")
-        chooseTestDate()
-        print("Finding test centers")
-        findtestcenter()
-        checkSchools(schoolcount.stripresult(jun_3))
-        while(1): # Infinite loop which breaks if an exception appears
-            try:
-                refreshTestCenter()
-            except:
-                break
-            else:
-                checkSchools(schoolcount.stripresult(jun_3))            
-        #sleep(60)
-        print("Restarting the loop")
-    except TimeoutException:
-        print(TimeoutException)
-        print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {TimeoutException}"))
-        driver.quit()
-        continue
-    except:
-        print("Unknown error")
-        print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, August Error! Check server!"))
-        print(traceback.format_exc())
-        driver.quit()
-        continue
+def main(test_date: str):
+    while 1:
+        try:
+            driver = WD.Chrome(options=op)
+            print("Logging in")
+            loginMySAT()
+            print("Entering registration")
+            satreg()
+            print("Choosing test date:")
+            chooseTestDate(test_date)
+            print("Finding test centers")
+            findtestcenter(test_date)
+            checkSchools(schoolcount.stripresult(jun_3))
+            while(1): # Infinite loop which breaks if an exception appears
+                try:
+                    refreshTestCenter()
+                except:
+                    break
+                else:
+                    checkSchools(schoolcount.stripresult(jun_3))            
+            #sleep(60)
+            print("Restarting the loop")
+        except TimeoutException:
+            print(TimeoutException)
+            print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {TimeoutException}"))
+            driver.quit()
+            continue
+        except:
+            print("Unknown error")
+            print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {test_date} Error! Check server!"))
+            print(traceback.format_exc())
+            driver.quit()
+            continue
+
+
+aug = thrd.Thread(target=main, args=("AUG-26",), name="august")
+oct = thrd.Thread(target=main, args=("OCT-7",), name="october")
+nov = thrd.Thread(target=main, args=("NOV-4",), name="november")
+dec = thrd.Thread(target=main, args=("DEC-2",), name="december")
+
+aug.start()
+oct.start()
+nov.start()
+dec.start()
