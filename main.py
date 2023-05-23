@@ -117,7 +117,7 @@ def checkSchools(counter: str, test_date):
     previous = (int)(schoolcount.stripresult(jun_3))
     
 
-op = webdriver.ChromeOptions()
+op = WD.ChromeOptions()
 #op.add_argument("--headless")
 op.add_argument("--disable-browser-side-navigation")
 op.add_argument("--no-sandbox")
