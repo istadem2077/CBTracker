@@ -12,14 +12,14 @@ import tgmessage
 import schoolcount
 # from xvfbwrapper import Xvfb
  # Initiate Chrome Browser
-def loginMySAT(driver):
+def loginMySAT(driver, email, password):
     driver.get("https://mysat.collegeboard.org/") # Login to website
     driver.refresh()
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/main/div/div/div/div/div/div/div/div/div/a'))).click() # Click the first continue button
     sleep(2)
     elementIdpUsername = driver.find_element(By.XPATH, '//*[@id="idp-discovery-username"]') # Identify username inout field
     elementIdpUsername.clear()
-    elementIdpUsername.send_keys("mehdievjamil@gmail.com") # Enter required email, to be prompted in next update if required
+    elementIdpUsername.send_keys(email) # Enter required email, to be prompted in next update if required
     
     try:
         WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="idp-discovery-submit"]'))).click() # Trigger click event on Next "submit" type button after entering email
@@ -30,7 +30,7 @@ def loginMySAT(driver):
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="okta-signin-password"]')))
         elementIdpPasswd = driver.find_element(By.XPATH, '//*[@id="okta-signin-password"]') # Identify Password input field
         elementIdpPasswd.clear()
-        elementIdpPasswd.send_keys("Zz123456!") # Enter required password TODO: remove password before pushing to GitHub!!!!!!
+        elementIdpPasswd.send_keys(password) # Enter required password TODO: remove password before pushing to GitHub!!!!!!
         driver.find_element(By.XPATH, '//*[@id="okta-signin-submit"]').click() # Trigger click event to submit password and email
         #print(driver.title)
 
@@ -60,12 +60,12 @@ def satreg(driver):
     WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="qc-id-selectdatecenter-testlocation-button-next"]'))).click()
 
 
-def refreshTestCenter(driver):
+def refreshTestCenter(test_date, driver):
     sleep(2)
     if driver.title == "SAT Registration":
         driver.refresh()
     WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div[2]/div[2]/button[1]'))).click() # SAT Registration. Get Started Button
-    findtestcenter()
+    findtestcenter(test_date=test_date, driver=driver)
 
 
 def chooseTestDate(test_date: str, driver):
@@ -125,35 +125,35 @@ op.add_argument("--disable-dev-shm-usage")
 counter = 0
 #logincreds = [[]] # logincreds[iterator][0] - email; logincreds[iterator][1]
 iterator = 0
-def main(test_date: str):
+def main(test_date: str, email: str, password: str):
     while 1:
         try:
             driver = WD.Chrome(options=op)
-            print("Logging in")
-            loginMySAT(driver=driver)
-            print("Entering registration")
+            print(f"{test_date} Logging in")
+            loginMySAT(driver=driver, email=email, password=password)
+            print(f"{test_date} Entering registration")
             satreg(driver=driver)
-            print("Choosing test date:")
+            print(f"{test_date} Choosing test date:")
             chooseTestDate(test_date, driver=driver)
-            print("Finding test centers")
-            findtestcenter(test_date, driver=driver)
+            print(f"{test_date} Finding test centers")
+            findtestcenter(test_date=test_date, driver=driver)
             checkSchools(schoolcount.stripresult(jun_3), test_date=test_date, driver=driver)
             while(1): # Infinite loop which breaks if an exception appears
                 try:
-                    refreshTestCenter(driver=driver)
+                    refreshTestCenter(test_date=test_date,driver=driver)
                 except:
                     break
                 else:
-                    checkSchools(schoolcount.stripresult(jun_3), test_date=test_date, driver=driver)            
+                    checkSchools(counter=schoolcount.stripresult(jun_3), test_date=test_date, driver=driver)            
             #sleep(60)
-            print("Restarting the loop")
+            print(f"{test_date} Restarting the loop")
         except TimeoutException:
             print(TimeoutException)
             print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {TimeoutException}{test_date}"))
             driver.quit()
             continue
         except:
-            print("Unknown error")
+            print(f"{test_date} Unknown error")
             print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {test_date} Error! Check server!"))
             print(traceback.format_exc())
             driver.quit()
