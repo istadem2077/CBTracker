@@ -86,7 +86,7 @@ def findtestcenter():
 previous = 0
 def checkSchools(counter: str):
     global previous
-    Message = [f"Last update: {ctime(time())}\n\n"]
+    Message = [f"December 2\nLast update: {ctime(time())}\n\n"]
     if ((int)(counter) > 0):
         print(driver.find_element(By.ID, 'undefined_next').get_attribute("aria-disabled"))
         while (driver.find_element(By.ID,'undefined_next').get_attribute("aria-disabled") != "true"):
