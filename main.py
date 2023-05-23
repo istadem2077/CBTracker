@@ -70,8 +70,8 @@ def refreshTestCenter():
 
 def chooseTestDate():
     driver.execute_script("window.scrollTo(0,600)")
-    WebDriverWait(driver, 100).until(EC.element_to_be_clickable((By.ID, "qc-id-selectdatecenter-testdate-button-AUG-26"))).click() # No need for May 6, deadline passed
-    print("Aug 26 checked: ", driver.find_element(By.ID, 'qc-id-selectdatecenter-testdate-button-AUG-26').get_attribute('aria-current'))
+    WebDriverWait(driver, 100).until(EC.element_to_be_clickable((By.ID, "qc-id-selectdatecenter-testdate-button-OCT-7"))).click() # No need for May 6, deadline passed
+    print("Aug 26 checked: ", driver.find_element(By.ID, 'qc-id-selectdatecenter-testdate-button-OCT-7').get_attribute('aria-current'))
     WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="testdate-continue-button"]'))).click()
 
 
@@ -81,7 +81,7 @@ def findtestcenter():
     sleep(2)
     driver.find_element(By.CLASS_NAME, 'toggle-btn').click()
     jun_3 = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div[1]/div/div/div/div[4]/div/div/div/div[1]/div/div/div[3]/div/div[3]/div/div/div[4]/div[2]/div[1]').text # Save text
-    print("June 3: {0}, Checked: {1}".format(jun_3, ctime(time())))
+    print("Oct 7: {0}, Checked: {1}".format(jun_3, ctime(time())))
 
 previous = 0
 def checkSchools(counter: str):
@@ -153,6 +153,7 @@ while(1):
         continue
     except:
         print("Unknown error")
-        print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, ```{traceback.format_exc()}```"))
+        print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, Unknown error! Check server log!"))
+        print(traceback.format_exc())
         driver.quit()
         continue
