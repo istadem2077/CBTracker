@@ -153,7 +153,7 @@ while(1):
         continue
     except:
         print("Unknown error")
-        print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, Unknown error! Check server log!"))
+        print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, Dec error! Check server log!"))
         print(traceback.format_exc())
         driver.quit()
         continue
