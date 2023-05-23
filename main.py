@@ -12,7 +12,7 @@ import tgmessage
 import schoolcount
 # from xvfbwrapper import Xvfb
  # Initiate Chrome Browser
-def loginMySAT():
+def loginMySAT(driver):
     driver.get("https://mysat.collegeboard.org/") # Login to website
     driver.refresh()
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/main/div/div/div/div/div/div/div/div/div/a'))).click() # Click the first continue button
@@ -35,7 +35,7 @@ def loginMySAT():
         #print(driver.title)
 
 
-def satreg():
+def satreg(driver):
     WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="qc-id-header-register-button"]'))).click()
     try:
         WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div/div[2]/div[2]/button'))).click()
@@ -60,7 +60,7 @@ def satreg():
     WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="qc-id-selectdatecenter-testlocation-button-next"]'))).click()
 
 
-def refreshTestCenter():
+def refreshTestCenter(driver):
     sleep(2)
     if driver.title == "SAT Registration":
         driver.refresh()
@@ -68,14 +68,14 @@ def refreshTestCenter():
     findtestcenter()
 
 
-def chooseTestDate(test_date):
+def chooseTestDate(test_date, driver):
     driver.execute_script("window.scrollTo(0,600)")
     WebDriverWait(driver, 100).until(EC.element_to_be_clickable((By.ID, f"qc-id-selectdatecenter-testdate-button-{test_date}"))).click() # No need for May 6, deadline passed
     print(f"{test_date} checked: ", driver.find_element(By.ID, f'qc-id-selectdatecenter-testdate-button-{test_date}').get_attribute('aria-current'))
     WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="testdate-continue-button"]'))).click()
 
 
-def findtestcenter(test_date):
+def findtestcenter(test_date, driver):
     global jun_3
     WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.ID, 'qc-id-selectdatecenter-testcenter-international-button-search'))).click() # Find a test center
     sleep(2)
@@ -84,7 +84,7 @@ def findtestcenter(test_date):
     print("{0}: {1}, Checked: {2}".format(test_date ,jun_3, ctime(time())))
 
 previous = 0
-def checkSchools(counter: str, test_date):
+def checkSchools(counter: str, test_date, driver):
     global previous
     Message = [f"{test_date}\nLast update: {ctime(time())}\n\n"]
     if ((int)(counter) > 0):
@@ -130,21 +130,21 @@ def main(test_date: str):
         try:
             driver = WD.Chrome(options=op)
             print("Logging in")
-            loginMySAT()
+            loginMySAT(driver=driver)
             print("Entering registration")
-            satreg()
+            satreg(driver=driver)
             print("Choosing test date:")
-            chooseTestDate(test_date)
+            chooseTestDate(test_date, driver=driver)
             print("Finding test centers")
-            findtestcenter(test_date)
+            findtestcenter(test_date, driver=driver)
             checkSchools(schoolcount.stripresult(jun_3))
             while(1): # Infinite loop which breaks if an exception appears
                 try:
-                    refreshTestCenter()
+                    refreshTestCenter(driver=driver)
                 except:
                     break
                 else:
-                    checkSchools(schoolcount.stripresult(jun_3))            
+                    checkSchools(schoolcount.stripresult(jun_3), driver=driver)            
             #sleep(60)
             print("Restarting the loop")
         except TimeoutException:
