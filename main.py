@@ -160,10 +160,10 @@ def main(test_date: str, email: str, password: str):
             continue
 
 
-aug = thrd.Thread(target=main, args=("AUG-26",), name="august")
-oct = thrd.Thread(target=main, args=("OCT-7",), name="october")
-nov = thrd.Thread(target=main, args=("NOV-4",), name="november")
-dec = thrd.Thread(target=main, args=("DEC-2",), name="december")
+aug = thrd.Thread(target=main, args=("AUG-26", "mehdievjamil@gmail.com", "Zz123456!"), name="august")
+oct = thrd.Thread(target=main, args=("OCT-7", "imanovaraz55@gmail.com", "Zz123456!"), name="october")
+nov = thrd.Thread(target=main, args=("NOV-4", "gulamovkanan382@gmail.com", "Zz123456!"), name="november")
+dec = thrd.Thread(target=main, args=("DEC-2", "alirzayev@gmail.com", "Zz123456!"), name="december")
 
 aug.start()
 oct.start()
