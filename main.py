@@ -68,14 +68,14 @@ def refreshTestCenter(driver):
     findtestcenter()
 
 
-def chooseTestDate(test_date, driver):
+def chooseTestDate(test_date: str, driver):
     driver.execute_script("window.scrollTo(0,600)")
     WebDriverWait(driver, 100).until(EC.element_to_be_clickable((By.ID, f"qc-id-selectdatecenter-testdate-button-{test_date}"))).click() # No need for May 6, deadline passed
     print(f"{test_date} checked: ", driver.find_element(By.ID, f'qc-id-selectdatecenter-testdate-button-{test_date}').get_attribute('aria-current'))
     WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="testdate-continue-button"]'))).click()
 
 
-def findtestcenter(test_date, driver):
+def findtestcenter(test_date: str, driver):
     global jun_3
     WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.ID, 'qc-id-selectdatecenter-testcenter-international-button-search'))).click() # Find a test center
     sleep(2)
@@ -84,7 +84,7 @@ def findtestcenter(test_date, driver):
     print("{0}: {1}, Checked: {2}".format(test_date ,jun_3, ctime(time())))
 
 previous = 0
-def checkSchools(counter: str, test_date, driver):
+def checkSchools(counter: str, test_date: str, driver):
     global previous
     Message = [f"{test_date}\nLast update: {ctime(time())}\n\n"]
     if ((int)(counter) > 0):
@@ -137,14 +137,14 @@ def main(test_date: str):
             chooseTestDate(test_date, driver=driver)
             print("Finding test centers")
             findtestcenter(test_date, driver=driver)
-            checkSchools(schoolcount.stripresult(jun_3))
+            checkSchools(schoolcount.stripresult(jun_3), test_date=test_date, driver=driver)
             while(1): # Infinite loop which breaks if an exception appears
                 try:
                     refreshTestCenter(driver=driver)
                 except:
                     break
                 else:
-                    checkSchools(schoolcount.stripresult(jun_3), driver=driver)            
+                    checkSchools(schoolcount.stripresult(jun_3), test_date=test_date, driver=driver)            
             #sleep(60)
             print("Restarting the loop")
         except TimeoutException:
