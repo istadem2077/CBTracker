@@ -149,7 +149,7 @@ def main(test_date: str):
             print("Restarting the loop")
         except TimeoutException:
             print(TimeoutException)
-            print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {TimeoutException}"))
+            print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {TimeoutException}{test_date}"))
             driver.quit()
             continue
         except:
