@@ -21,12 +21,12 @@ def loginMySAT(driver, email, password):
     elementIdpUsername.send_keys(email) # Enter required email, to be prompted in next update if required
     
     try:
-        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="idp-discovery-submit"]'))).click() # Trigger click event on Next "submit" type button after entering email
+        WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="idp-discovery-submit"]'))).click() # Trigger click event on Next "submit" type button after entering email
     except ElementClickInterceptedException:
-        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler"))).click()
-        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="idp-discovery-submit"]'))).click() # Trigger click event on Next "submit" type button after entering email
+        WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler"))).click()
+        WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="idp-discovery-submit"]'))).click() # Trigger click event on Next "submit" type button after entering email
     else:
-        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="okta-signin-password"]')))
+        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="okta-signin-password"]')))
         elementIdpPasswd = driver.find_element(By.XPATH, '//*[@id="okta-signin-password"]') # Identify Password input field
         elementIdpPasswd.clear()
         elementIdpPasswd.send_keys(password) # Enter required password TODO: remove password before pushing to GitHub!!!!!!
@@ -43,15 +43,15 @@ def satreg(driver):
         driver.get("https://mysat.collegeboard.org/dashboard")
         satreg(driver)
     except ElementClickInterceptedException:
-        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler"))).click()
+        WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler"))).click()
         WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div/div[2]/div[2]/button'))).click()
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="qc-id-personalinfo-button-graddateconfirm"]'))).click()
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="qc-id-personalinfo-button-gradeconfirm"]'))).click()
+    WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="qc-id-personalinfo-button-graddateconfirm"]'))).click()
+    WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="qc-id-personalinfo-button-gradeconfirm"]'))).click()
     sleep(5)
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="continue-to-demographics-btn"]'))).click()
+    WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="continue-to-demographics-btn"]'))).click()
     sleep(5)
     WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="save-exit-demographics-btn"]'))).click()
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div[2]/div[2]/button[1]'))).click() # SAT Registration. Get Started Button
+    WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div[2]/div[2]/button[1]'))).click() # SAT Registration. Get Started Button
     driver.find_element(By.XPATH, '//*[@id="qc-id-termsconditions-scrollbox-termsconditions"]').send_keys(Keys.END)
     sleep(5)
     driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div[1]/div/div/div[2]/div/div/div/label/span').click() # Click the checkbox
@@ -63,7 +63,7 @@ def refreshTestCenter(test_date, driver):
     sleep(2)
     if driver.title == "SAT Registration":
         driver.refresh()
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div[2]/div[2]/button[1]'))).click() # SAT Registration. Get Started Button
+    WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div[2]/div[2]/button[1]'))).click() # SAT Registration. Get Started Button
     findtestcenter(test_date=test_date, driver=driver)
 
 
