@@ -10,11 +10,6 @@ import traceback
 import threading as thrd
 import tgmessage
 import schoolcount
-from xvfbwrapper import Xvfb
-
-vdisplay = Xvfb()
-vdisplay.start()
-
  # Initiate Chrome Browser
 def loginMySAT(driver, email, password):
     driver.get("https://mysat.collegeboard.org/") # Login to website
@@ -176,5 +171,3 @@ aug.start()
 oct.start()
 nov.start()
 dec.start()
-
-vdisplay.stop()
