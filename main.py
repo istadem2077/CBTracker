@@ -10,7 +10,11 @@ import traceback
 import threading as thrd
 import tgmessage
 import schoolcount
-# from xvfbwrapper import Xvfb
+from xvfbwrapper import Xvfb
+
+vdisplay = Xvfb()
+vdisplay.start()
+
  # Initiate Chrome Browser
 def loginMySAT(driver, email, password):
     driver.get("https://mysat.collegeboard.org/") # Login to website
@@ -157,6 +161,8 @@ def main(test_date: str, email: str, password: str):
             print(f"{test_date} Unknown error")
             print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {test_date} Error! Check server!"))
             print(traceback.format_exc())
+            trcbk = traceback.format_exc()
+            print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {test_date} Error! Check server!"))
             driver.quit()
             continue
 
@@ -170,3 +176,5 @@ aug.start()
 oct.start()
 nov.start()
 dec.start()
+
+vdisplay.stop()
