@@ -131,27 +131,20 @@ def main(test_date: str, email: str, password: str):
             driver = WD.Chrome(options=op)
             print(f"{test_date} Logging in")
             loginMySAT(driver=driver, email=email, password=password)
-            sleep(1)
             print(f"{test_date} Entering registration")
             satreg(driver=driver)
-            sleep(1)
             print(f"{test_date} Choosing test date:")
             chooseTestDate(test_date, driver=driver)
-            sleep(1)
             print(f"{test_date} Finding test centers")
             findtestcenter(test_date=test_date, driver=driver)
-            sleep(1)
             checkSchools(schoolcount.stripresult(jun_3), test_date=test_date, driver=driver)
-            sleep(1)
             while(1): # Infinite loop which breaks if an exception appears
                 try:
                     refreshTestCenter(test_date=test_date,driver=driver)
-                    sleep(1)
                 except:
                     break
                 else:
-                    checkSchools(counter=schoolcount.stripresult(jun_3), test_date=test_date, driver=driver)
-                    sleep(1)            
+                    checkSchools(counter=schoolcount.stripresult(jun_3), test_date=test_date, driver=driver)       
             #sleep(60)
             print(f"{test_date} Restarting the loop")
         except TimeoutException:
