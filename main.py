@@ -150,7 +150,7 @@ def main(test_date: str, email: str, password: str):
         except TimeoutException:
             print(TimeoutException)
             print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {TimeoutException}{test_date}"))
-            trcbk = traceback.format_exc()
+            trcbk = traceback.format_exc().replace('_', '\\_').replace('*', '\\*').replace('[','\\[').replace('`', '\\`')
             print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {test_date}\n```\n{trcbk}```"))
             driver.quit()
             continue
@@ -161,8 +161,8 @@ def main(test_date: str, email: str, password: str):
             print(f"{test_date} Unknown error")
             print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {test_date} Error! Check server!"))
             print(traceback.format_exc())
-            trcbk = traceback.format_exc()
-            print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {test_date}\n\n<p><code>{trcbk}<code><p>"))
+            trcbk = traceback.format_exc().replace('_', '\\_').replace('*', '\\*').replace('[','\\[').replace('`', '\\`')
+            print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {test_date}\n```\n{trcbk}```"))
             driver.quit()
             continue
 
