@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import TimeoutException, NoSuchElementException, ElementClickInterceptedException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException, ElementClickInterceptedException, NoSuchWindowException
 from time import ctime, time, sleep
 import traceback
 import threading as thrd
@@ -154,6 +154,9 @@ def main(test_date: str, email: str, password: str):
             print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {test_date}\n```\n{trcbk}```"))
             driver.quit()
             continue
+        except NoSuchWindowException:
+            print("Killing application")
+            break
         except:
             print(f"{test_date} Unknown error")
             print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {test_date} Error! Check server!"))
