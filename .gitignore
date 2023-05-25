@@ -4,3 +4,4 @@ token.json
 __pycache__/emailer.cpython-311.pyc
 test.py
 __pycache__/schoolcount.cpython-311.pyc
+__pycache__/tgmessage.cpython-311.pyc
