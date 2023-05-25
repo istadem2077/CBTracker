@@ -162,7 +162,7 @@ def main(test_date: str, email: str, password: str):
             print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {test_date} Error! Check server!"))
             print(traceback.format_exc())
             trcbk = traceback.format_exc()
-            print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {test_date}\n```\n{trcbk}```"))
+            print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {test_date}\n\n<p><code>{trcbk}<code><p>"))
             driver.quit()
             continue
 
