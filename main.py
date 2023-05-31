@@ -167,7 +167,7 @@ def main(test_date: str, email: str, password: str):
             continue
 
 
-aug = thrd.Thread(target=main, args=("AUG-26", "huseinovzaur95@gmail.com", "Zz123456!"), name="august")
+aug = thrd.Thread(target=main, args=("AUG-26", "gulamovkanan382@gmail.com", "Zz123456!"), name="august")
 #oct = thrd.Thread(target=main, args=("OCT-7", "imanovaraz55@gmail.com", "Zz123456!"), name="october")
 #nov = thrd.Thread(target=main, args=("NOV-4", "gulamovkanan382@gmail.com", "Zz123456!"), name="november")
 #dec = thrd.Thread(target=main, args=("DEC-2", "alirzaev997@gmail.com", "Zz123456!"), name="december")
