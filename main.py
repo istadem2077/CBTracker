@@ -121,6 +121,7 @@ op = WD.ChromeOptions()
 op.add_argument("--disable-browser-side-navigation")
 op.add_argument("--no-sandbox")
 op.add_argument("--disable-dev-shm-usage")
+op.add_extension("./touchvpn.crx")
 PROXY="socks5://localhost:9050"
 op.add_argument(f"--proxy-server={PROXY}")
 counter = 0
