@@ -132,6 +132,8 @@ def main(test_date: str, email: str, password: str):
     while 1:
         try:
             driver = WD.Chrome(options=op)
+            sleep(4)
+            driver.close()
             print(f"{test_date} Logging in")
             loginMySAT(driver=driver, email=email, password=password)
             print(f"{test_date} Entering registration")
