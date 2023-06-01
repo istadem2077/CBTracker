@@ -122,7 +122,7 @@ op.add_argument("--disable-browser-side-navigation")
 op.add_argument("--no-sandbox")
 op.add_argument("--disable-dev-shm-usage")
 PROXY="socks5://localhost:9050"
-op.add_argument(f"--proxy-server={PROXY}")
+#op.add_argument(f"--proxy-server={PROXY}")
 #op.add_argument("--user-data-dir='/root/.config/google-chrome/Profile 1'")
 counter = 0
 #logincreds = [[]] # logincreds[iterator][0] - email; logincreds[iterator][1]
