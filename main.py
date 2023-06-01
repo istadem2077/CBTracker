@@ -123,7 +123,7 @@ op.add_argument("--no-sandbox")
 op.add_argument("--disable-dev-shm-usage")
 PROXY="socks5://localhost:9050"
 #op.add_argument(f"--proxy-server={PROXY}")
-op.add_argument(r"--user-data-dir='/root/.config/google-chrome/Profile 1'")
+#op.add_argument("--user-data-dir='/root/.config/google-chrome/Profile 1'")
 counter = 0
 #logincreds = [[]] # logincreds[iterator][0] - email; logincreds[iterator][1]
 iterator = 0
@@ -132,7 +132,6 @@ def main(test_date: str, email: str, password: str):
     while 1:
         try:
             driver = WD.Chrome(options=op)
-            sleep(15)
             print(f"{test_date} Logging in")
             loginMySAT(driver=driver, email=email, password=password)
             print(f"{test_date} Entering registration")
