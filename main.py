@@ -166,7 +166,7 @@ def main(test_date: str, email: str, password: str):
             trcbk = traceback.format_exc().replace('_', '\\_').replace('*', '\\*').replace('[','\\[').replace('`', '\\`')
             print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {test_date}\n```\n{trcbk}```"))
             driver.quit()
-            continue
+            break
 
 
 aug = thrd.Thread(target=main, args=("AUG-26", "imanovaraz55@gmail.com", "Zz123456!"), name="august")
