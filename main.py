@@ -177,7 +177,7 @@ def testproxy():
     except:
         sleep(60)
 #aug = thrd.Thread(target=main, args=("AUG-26", "aasifov61@gmail.com", "Zz123456!"), name="august")
-oct = thrd.Thread(target=main, args=("OCT-7", "aasifov61@gmail.com", "Zz123456!"), name="october")
+oct = thrd.Thread(target=main, args=("OCT-7", "supcollegeboard@gmail.com", "Zz123456!"), name="october")
 #nov = thrd.Thread(target=main, args=("NOV-4", "gulamovkanan382@gmail.com", "Zz123456!"), name="november")
 #dec = thrd.Thread(target=main, args=("DEC-2", "alirzaev997@gmail.com", "Zz123456!"), name="december")
 #test = thrd.Thread(target=testproxy, args=())
