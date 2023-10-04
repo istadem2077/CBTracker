@@ -32,6 +32,7 @@ def loginMySAT(driver: WD.Chrome, email, password, wdw: WebDriverWait):
     elementIdpUsername.clear()
     elementIdpUsername.send_keys(email) # Enter required email, to be prompted in next update if required
     wdw.until(EC.element_to_be_clickable((bycss, "#onetrust-accept-btn-handler"))).click()
+    sleep(2)
     wdw.until(EC.element_to_be_clickable((bycss, sign_in_email_submit_id))).click() # Trigger click event on Next "submit" type button after entering email
     try:
         wdw.until(EC.element_to_be_clickable((bycss, sign_in_email_submit_id))).click() # Trigger click event on Next "submit" type button after entering email
@@ -40,7 +41,6 @@ def loginMySAT(driver: WD.Chrome, email, password, wdw: WebDriverWait):
         wdw.until(EC.element_to_be_clickable((bycss, sign_in_email_submit_id))).click() # Trigger click event on Next "submit" type button after entering email
     else:
         # wdw.until(EC.presence_of_element_located((bycss, sign_in_password_id)))
-        sleep(3)
         driver.find_element(bycss, sign_in_password_submit_id).click() # Trigger click event to submit password and email
         elementIdpPasswd = driver.find_element(bycss, sign_in_password_id) # Identify Password input field
         driver.find_element(bycss, sign_in_password_id).clear()
