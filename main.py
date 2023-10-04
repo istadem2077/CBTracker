@@ -15,8 +15,8 @@ import schoolcount
 from elements_paths import *
 from xvfbwrapper import Xvfb
 
-x = Xvfb()
-x.start()
+# x = Xvfb()
+# x.start()
 
 
 bycss = By.CSS_SELECTOR
@@ -191,4 +191,4 @@ def main(test_date: str, email: str, password: str):
             return -1
 
 main("DEC-2", "supcollegeboard@gmail.com", "Zz123456!")
-x.stop()
+# x.stop()
