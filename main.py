@@ -37,7 +37,7 @@ def loginMySAT(driver: WD.Chrome, email, password, wdw: WebDriverWait):
     except ElementClickInterceptedException:
         wdw.until(EC.element_to_be_clickable((bycss, "#onetrust-accept-btn-handler"))).click()
         wdw.until(EC.element_to_be_clickable((bycss, sign_in_email_submit_id))).click() # Trigger click event on Next "submit" type button after entering email
-        # wdw.until(EC.presence_of_element_located((bycss, sign_in_password_id)))
+    wdw.until(EC.presence_of_element_located((bycss, sign_in_password_id)))
     driver.find_element(bycss, sign_in_password_id).clear()
     driver.find_element(bycss, sign_in_password_id).send_keys(password) # Enter required password TODO: remove password before pushing to GitHub!!!!!!
     driver.find_element(bycss, sign_in_password_submit_id).click() # Trigger click event to submit password and email
