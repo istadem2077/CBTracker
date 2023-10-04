@@ -150,6 +150,7 @@ def main(test_date: str, email: str, password: str):
             print(111111)
             wdw = WebDriverWait(driver, 60)
             print(f"{test_date} Logging in")
+            tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, Logged IN")
             loginMySAT(driver=driver, email=email, password=password, wdw=wdw)
             print(f"{test_date} Entering registration")
             satreg(driver=driver, wdw=wdw)
