@@ -41,6 +41,7 @@ def loginMySAT(driver: WD.Chrome, email, password, wdw: WebDriverWait):
     else:
         # wdw.until(EC.presence_of_element_located((bycss, sign_in_password_id)))
         sleep(3)
+        driver.find_element(bycss, sign_in_password_submit_id).click() # Trigger click event to submit password and email
         elementIdpPasswd = driver.find_element(bycss, sign_in_password_id) # Identify Password input field
         driver.find_element(bycss, sign_in_password_id).clear()
         driver.find_element(bycss, sign_in_password_id).send_keys(password) # Enter required password TODO: remove password before pushing to GitHub!!!!!!
