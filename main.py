@@ -31,7 +31,8 @@ def loginMySAT(driver: WD.Chrome, email, password, wdw: WebDriverWait):
     elementIdpUsername = driver.find_element(bycss, sign_in_email_id) # Identify username inout field
     elementIdpUsername.clear()
     elementIdpUsername.send_keys(email) # Enter required email, to be prompted in next update if required
-    
+    wdw.until(EC.element_to_be_clickable((bycss, "#onetrust-accept-btn-handler"))).click()
+    wdw.until(EC.element_to_be_clickable((bycss, sign_in_email_submit_id))).click() # Trigger click event on Next "submit" type button after entering email
     try:
         wdw.until(EC.element_to_be_clickable((bycss, sign_in_email_submit_id))).click() # Trigger click event on Next "submit" type button after entering email
     except ElementClickInterceptedException:
