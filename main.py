@@ -185,4 +185,4 @@ def main(test_date: str, email: str, password: str):
             driver.quit()
             return -1
 
-main("NOV-4", "supcollegeboard@gmail.com", "Zz123456!")
+main("DEC-2", "supcollegeboard@gmail.com", "Zz123456!")
