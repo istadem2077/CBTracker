@@ -130,7 +130,8 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome, wdw: WebDriver
     
 
 op = Options()
-service = Service('/usr/bin/chromedriver')
+service = Service('./chromedriver')
+op.binary_location = "/home/ec2-user/chrome-linux64/chrome"
 #op.add_argument("--headless")
 # op.add_argument("--disable-browser-side-navigation")
 # op.add_argument("--no-sandbox")
@@ -145,7 +146,7 @@ def main(test_date: str, email: str, password: str):
     print(f"Starting {test_date}")
     while 1:
         try:
-            driver = WD.Chrome(service=service)
+            driver = WD.Chrome(service=service, options=op)
             print(111111)
             wdw = WebDriverWait(driver, 60)
             print(f"{test_date} Logging in")
