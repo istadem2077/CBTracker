@@ -13,11 +13,12 @@ import traceback
 import tgmessage
 import schoolcount
 from elements_paths import *
-from xvfbwrapper import Xvfb
+# from xvfbwrapper import Xvfb
 
 # x = Xvfb()
 # x.start()
 
+tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, Bot started")
 
 bycss = By.CSS_SELECTOR
 byxpath = By.XPATH
@@ -94,7 +95,7 @@ def findtestcenter(test_date: str, driver: WD.Chrome, wdw: WebDriverWait):
     print("{0}: {1}, Checked: {2}".format(test_date ,jun_3, ctime(time())))
 
 previous = 0
-def checkSchools(counter: str, test_date: str, driver: WD.Chrome, wdw: WebDriverWait):
+def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
     global previous
     Message = [f"{test_date}\nLast update: {ctime(time())}\n\n"]
     if ((int)(counter) > 0):
@@ -137,7 +138,6 @@ op.add_argument("--start-maximized")
 # PROXY="socks5://localhost:9050"
 #op.add_argument(f"--proxy-server={PROXY}")
 #op.add_argument("--user-data-dir='/root/.config/google-chrome/Profile 1'")
-counter = 0
 #logincreds = [[]] # logincreds[iterator][0] - email; logincreds[iterator][1]
 iterator = 0
 def main(test_date: str, email: str, password: str):
@@ -148,15 +148,15 @@ def main(test_date: str, email: str, password: str):
             print(111111)
             wdw = WebDriverWait(driver, 60)
             print(f"{test_date} Logging in")
-            tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, Logged IN")
             loginMySAT(driver=driver, email=email, password=password, wdw=wdw)
+            tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, Logged IN")
             print(f"{test_date} Entering registration")
             satreg(driver=driver, wdw=wdw)
             print(f"{test_date} Choosing test date:")
             chooseTestDate(test_date, driver=driver, wdw=wdw)
             print(f"{test_date} Finding test centers")
             findtestcenter(test_date=test_date, driver=driver, wdw=wdw)
-            checkSchools(schoolcount.stripresult(jun_3), test_date=test_date, driver=driver, wdw=wdw)
+            checkSchools(schoolcount.stripresult(jun_3), test_date=test_date, driver=driver)
             while(1): # Infinite loop which breaks if an exception appears
                 try:
                     refreshTestCenter(test_date=test_date,driver=driver, wdw=wdw)
@@ -164,7 +164,7 @@ def main(test_date: str, email: str, password: str):
                     traceback.print_exc()
                     break
                 else:
-                    checkSchools(counter=schoolcount.stripresult(jun_3), test_date=test_date, driver=driver, wdw=wdw)       
+                    checkSchools(counter=schoolcount.stripresult(jun_3), test_date=test_date, driver=driver)       
             #sleep(60)
             print(f"{test_date} Restarting the loop")
         except TimeoutException:
