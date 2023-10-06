@@ -115,10 +115,10 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome, wdw: WebDriver
         Message = "\n".join(Message)
         print(Message)
         if previous == 0:
-            # print(tgmessage.telegram_sendmessage(976908358, Message))
+            print(tgmessage.telegram_sendmessage(976908358, Message)) # Arif
             print(tgmessage.telegram_sendmessage(5670908383, Message)) # My chat
-            # print(tgmessage.telegram_sendmessage(584098198, Message))
-            # print(tgmessage.telegram_sendmessage(853226047, Message))
+            print(tgmessage.telegram_sendmessage(584098198, Message)) # Mansur
+            print(tgmessage.telegram_sendmessage(912056633, Message)) # Abdulaziz
             # print(tgmessage.telegram_sendmessage(1278150481, Message))
             # print(tgmessage.telegram_sendmessage(809899348, Message))
             # print(tgmessage.telegram_sendmessage(853226047, Message))
@@ -189,5 +189,5 @@ def main(test_date: str, email: str, password: str):
             driver.quit()
             return -1
 
-main("DEC-2", "supcollegeboard@gmail.com", "Zz123456!")
+main("DEC-2", "fabbasov693@gmail.com", "Zz123456!")
 # x.stop()
