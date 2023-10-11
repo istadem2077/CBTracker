@@ -120,7 +120,7 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
             print(tgmessage.telegram_sendmessage(5670908383, Message)) # My chat
             print(tgmessage.telegram_sendmessage(584098198, Message)) # Mansur
             print(tgmessage.telegram_sendmessage(912056633, Message)) # Abdulaziz
-            # print(tgmessage.telegram_sendmessage(1278150481, Message))
+            print(tgmessage.telegram_sendmessage(1278150481, Message)) # Rafail
             # print(tgmessage.telegram_sendmessage(809899348, Message))
             # print(tgmessage.telegram_sendmessage(853226047, Message))
             # print(tgmessage.telegram_sendmessage(716930078, Message))
