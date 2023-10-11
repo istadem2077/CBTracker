@@ -18,5 +18,5 @@ test_date_button_id = '#qc-id-selectdatecenter-testdate-button-{0}'
 test_date_continue_id = '#testdate-continue-button'
 select_diff_center_id = '#qc-id-selectdatecenter-testcenter-radio-searchtestcenter'
 find_centers_id = "#qc-id-selectdatecenter-testcenter-international-button-search"
-toggle_button_id = "#qc-id-selectdatecenter-testcenter-toggle-showavailableonly"
+toggle_button_id = "span.toggle-btn"
 avail_schools_count_css = 'div.results-label'
