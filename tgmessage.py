@@ -8,6 +8,7 @@
 # pylint: disable=global-statement
 # pylint: disable=missing-timeout
 import requests
+import json
 
 def notify(bot_chatID, bot_message:str):
 
@@ -25,3 +26,8 @@ def cberror(bot_message:str, bot_chatID = 5670908383):
 
     response = requests.get(send_text)
     return response.json()
+
+def logs(file:str, bot_chatID = 5670908383):
+
+    bot_token = "6412450545:AAH0N0coNpBcQdXPzGdGTyPvBGBTs1_IwAI"
+    return json.loads(requests.post(f"https://api.telegram.org/bot{bot_token}/sendDocument", files={'chat_id' : open(file, 'rb')}, data={'chat_id' : bot_chatID}).content.decode('utf-8'))

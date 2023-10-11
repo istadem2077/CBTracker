@@ -21,7 +21,7 @@ from selenium.common.exceptions import (
     NoSuchWindowException,
 )
 
-from tgmessage import notify, cberror
+from tgmessage import notify, cberror, logs
 import schoolcount
 from elements_paths import *
 
@@ -208,6 +208,7 @@ def main(test_date: str, email: str, password: str):
             print(TimeoutException)
             print(cberror(f"{ctime(time())}, {TimeoutException}{test_date}"))
             open("timeout.log", "w").write(traceback.format_exc())
+            logs('timeout.log')
             driver.quit()
             continue
         except NoSuchWindowException:
@@ -221,6 +222,7 @@ def main(test_date: str, email: str, password: str):
             print(cberror(f"{ctime(time())}, {test_date} Error! Check server!"))
             print(traceback.format_exc())
             open("./error.log", "w").write(traceback.format_exc())
+            logs('./error.log')
             driver.quit()
             return -1
 
