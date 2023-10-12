@@ -6,7 +6,6 @@
 # pylint: disable=missing-module-docstring
 # pylint: disable=missing-function-docstring
 # pylint: disable=global-statement
-from multiprocessing import Process, Pool
 from time import ctime, time, sleep
 import traceback
 from selenium import webdriver as WD
@@ -21,7 +20,7 @@ from selenium.common.exceptions import (
     ElementClickInterceptedException,
     NoSuchWindowException,
 )
-
+from multiprocessing import Process
 
 from tgmessage import notify, cberror, logs
 import schoolcount
@@ -32,6 +31,7 @@ from elements_paths import *
 # x = Xvfb()
 # x.start()
 
+cberror(f"{ctime(time())}, Bot started")
 
 bycss = By.CSS_SELECTOR
 byxpath = By.XPATH
@@ -165,13 +165,12 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
 
 
 op = Options()
-service = Service("./chromedriver-linux64/chromedriver")
+service = Service("/usr/bin/chromedriver")
 # op.add_argument("--headless")
 op.add_argument("--disable-browser-side-navigation")
 op.add_argument("--no-sandbox")
 op.add_argument("--disable-dev-shm-usage")
 op.add_argument("--start-maximized")
-op.binary_location = './chrome-linux64/chrome'
 # PROXY="socks5://localhost:9050"
 # op.add_argument(f"--proxy-server={PROXY}")
 # op.add_argument("--user-data-dir='/root/.config/google-chrome/Profile 1'")
@@ -180,7 +179,7 @@ iterator = 0
 
 
 def main(test_date: str, email: str, password: str):
-    cberror(f"{ctime(time())}, {test_date} Bot started")
+    print(f"Starting {test_date}")
     while 1:
         try:
             driver = WD.Chrome(service=service, options=op)
@@ -228,15 +227,6 @@ def main(test_date: str, email: str, password: str):
             driver.quit()
             return -1
 
-args1=("NOV-4", "fabbasov693@gmail.com", "Zz123456!")
-args2=("DEC-2", "supcollegeboard@gmail.com", "Zz123456!")
-pool = Pool(processes=2)
-results = []
-dec = pool.apply_async(main, args=args2)
-results.append(dec)
-nov = pool.apply_async(main, args=args1)
-results.append(nov)
 
-for result in results:
-    result.get()
+main("NOV-4", "fabbasov693@gmail.com", "Zz123456!")
 # x.stop()
