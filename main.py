@@ -236,4 +236,7 @@ dec = pool.apply_async(main, args=args2)
 results.append(dec)
 nov = pool.apply_async(main, args=args1)
 results.append(nov)
+
+for result in results:
+    result.get()
 # x.stop()
