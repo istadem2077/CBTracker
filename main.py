@@ -20,6 +20,7 @@ from selenium.common.exceptions import (
     ElementClickInterceptedException,
     NoSuchWindowException,
 )
+from multiprocessing import Process
 
 from tgmessage import notify, cberror, logs
 import schoolcount
@@ -30,7 +31,6 @@ from elements_paths import *
 # x = Xvfb()
 # x.start()
 
-cberror(f"{ctime(time())}, Bot started")
 
 bycss = By.CSS_SELECTOR
 byxpath = By.XPATH
@@ -178,7 +178,7 @@ iterator = 0
 
 
 def main(test_date: str, email: str, password: str):
-    print(f"Starting {test_date}")
+    cberror(f"{ctime(time())}, {test_date} Bot started")
     while 1:
         try:
             driver = WD.Chrome(service=service, options=op)
@@ -227,5 +227,11 @@ def main(test_date: str, email: str, password: str):
             return -1
 
 
-main("DEC-2", "fabbasov693@gmail.com", "Zz123456!")
+
+nov = Process(target=main, args=("NOV-4", "fabbasov693@gmail.com", "Zz123456!"))
+dec = Process(target=main, args=("DEC-2", "fabbasov693@gmail.com", "Zz123456!"))
+nov.start()
+dec.start()
+nov.join()
+dec.join()
 # x.stop()
