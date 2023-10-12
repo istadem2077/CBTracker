@@ -6,7 +6,7 @@
 # pylint: disable=missing-module-docstring
 # pylint: disable=missing-function-docstring
 # pylint: disable=global-statement
-from multiprocessing import Process
+from multiprocessing import Process, Pool
 from time import ctime, time, sleep
 import traceback
 from selenium import webdriver as WD
@@ -228,11 +228,12 @@ def main(test_date: str, email: str, password: str):
             driver.quit()
             return -1
 
-
-nov = Process(target=main, args=("NOV-4", "fabbasov693@gmail.com", "Zz123456!"))
-dec = Process(target=main, args=("DEC-2", "supcollegeboard@gmail.com", "Zz123456!"))
-nov.start()
-dec.start()
-nov.join()
-dec.join()
+args1=("NOV-4", "fabbasov693@gmail.com", "Zz123456!")
+args2=("DEC-2", "supcollegeboard@gmail.com", "Zz123456!")
+pool = Pool(processes=2)
+results = []
+dec = pool.apply_async(main, args=args2)
+results.append(dec)
+nov = pool.apply_async(main, args=args1)
+results.append(nov)
 # x.stop()
