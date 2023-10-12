@@ -177,7 +177,57 @@ op.add_argument("--start-maximized")
 iterator = 0
 
 
-def main(test_date: str, email: str, password: str):
+def dec(test_date: str, email: str, password: str):
+    cberror(f"{ctime(time())}, {test_date} Bot started")
+    while 1:
+        try:
+            driver = WD.Chrome(options=op)
+            print(111111)
+            wdw = WebDriverWait(driver, 60)
+            print(f"{test_date} Logging in")
+            loginMySAT(driver=driver, email=email, password=password, wdw=wdw)
+            cberror(f"{ctime(time())}, Logged IN")
+            print(f"{test_date} Entering registration")
+            satreg(driver=driver, wdw=wdw)
+            print(f"{test_date} Choosing test date:")
+            chooseTestDate(test_date, driver=driver, wdw=wdw)
+            print(f"{test_date} Finding test centers")
+            findtestcenter(test_date=test_date, driver=driver, wdw=wdw)
+            checkSchools(schoolcount.stripresult(jun_3), test_date=test_date, driver=driver)
+            while 1:  # Infinite loop which breaks if an exception appears
+                try:
+                    refreshTestCenter(test_date=test_date, driver=driver, wdw=wdw)
+                except:
+                    traceback.print_exc()
+                    break
+                else:
+                    checkSchools(counter=schoolcount.stripresult(jun_3),test_date=test_date,driver=driver)
+            # sleep(60)
+            print(f"{test_date} Restarting the loop")
+        except TimeoutException:
+            print(TimeoutException)
+            print(cberror(f"{ctime(time())}, {TimeoutException}{test_date}"))
+            open("timeout.log", "w").write(traceback.format_exc())
+            logs('timeout.log')
+            driver.quit()
+            continue
+        except NoSuchWindowException:
+            print("Killing application")
+            return 1
+        except KeyboardInterrupt:
+            print("Killing application")
+            return 0
+        except:
+            print(f"{test_date} Unknown error")
+            print(cberror(f"{ctime(time())}, {test_date} Error! Check server!"))
+            print(traceback.format_exc())
+            open("./error.log", "w").write(traceback.format_exc())
+            logs('./error.log')
+            driver.quit()
+            return -1
+
+
+def nov(test_date: str, email: str, password: str):
     cberror(f"{ctime(time())}, {test_date} Bot started")
     while 1:
         try:
@@ -228,8 +278,8 @@ def main(test_date: str, email: str, password: str):
 
 
 
-nov = Process(target=main, args=("NOV-4", "fabbasov693@gmail.com", "Zz123456!"))
-dec = Process(target=main, args=("DEC-2", "supcollegeboard@gmail.com", "Zz123456!"))
+nov = Process(target=nov, args=("NOV-4", "fabbasov693@gmail.com", "Zz123456!"))
+dec = Process(target=dec, args=("DEC-2", "supcollegeboard@gmail.com", "Zz123456!"))
 nov.start()
 dec.start()
 nov.join()
