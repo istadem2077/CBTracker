@@ -30,4 +30,4 @@ def cberror(bot_message:str, bot_chatID = 5670908383):
 def logs(file:str, bot_chatID = 5670908383):
 
     bot_token = "6412450545:AAH0N0coNpBcQdXPzGdGTyPvBGBTs1_IwAI"
-    return json.loads(requests.post(f"https://api.telegram.org/bot{bot_token}/sendDocument", files={'chat_id' : open(file, 'rb')}, data={'chat_id' : bot_chatID}).content.decode('utf-8'))
+    return json.loads(requests.post(f"https://api.telegram.org/bot{bot_token}/sendDocument", files={'document' : open(file, 'rb')}, data={'chat_id' : bot_chatID}).content.decode('utf-8'))
