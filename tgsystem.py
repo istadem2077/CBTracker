@@ -13,3 +13,5 @@ def srvreboot(message):
 @bot.message_handler(commands=['shutoff', 'shutup', 'shutdown'])
 def shutdown(message):
     subprocess.Popen(['shutdown'], shell=True)
+    
+bot.infinity_polling()
