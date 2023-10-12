@@ -182,7 +182,7 @@ def main(test_date: str, email: str, password: str):
     cberror(f"{ctime(time())}, {test_date} Bot started")
     while 1:
         try:
-            driver = WD.Chrome(options=op)
+            driver = WD.Chrome(service=service, options=op)
             print(111111)
             wdw = WebDriverWait(driver, 60)
             print(f"{test_date} Logging in")
