@@ -24,6 +24,8 @@ from multiprocessing import Process
 
 from tgmessage import notify, cberror, logs
 import schoolcount
+from elements_paths import *
+
 # from xvfbwrapper import Xvfb
 
 # x = Xvfb()
@@ -39,107 +41,127 @@ byxpath = By.XPATH
 def loginMySAT(driver: WD.Chrome, email, password, wdw: WebDriverWait):
     driver.get("https://mysat.collegeboard.org/")  # Login to website
     driver.refresh()
-    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/main/div/div/div/div/div/div/div/div/div/a'))).click() # Click the first continue button
+    WebDriverWait(driver, 20).until(
+        EC.element_to_be_clickable((bycss, sign_in_btn_id))
+    ).click()  # Click the first continue button
     sleep(2)
-    elementIdpUsername = driver.find_element(By.XPATH, '//*[@id="idp-discovery-username"]') # Identify username inout field
+    elementIdpUsername = driver.find_element(
+        bycss, sign_in_email_id
+    )  # Identify username inout field
     elementIdpUsername.clear()
-    elementIdpUsername.send_keys("mehdievjamil@gmail.com") # Enter required email, to be prompted in next update if required
-    
+    elementIdpUsername.send_keys(
+        email
+    )  # Enter required email, to be prompted in next update if required
+    sleep(2)
     try:
-        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="idp-discovery-submit"]'))).click() # Trigger click event on Next "submit" type button after entering email
+        wdw.until(
+            EC.element_to_be_clickable((bycss, sign_in_email_submit_id))
+        ).click()  # Trigger click event on Next "submit" type button after entering email
     except ElementClickInterceptedException:
-        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler"))).click()
-        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="idp-discovery-submit"]'))).click() # Trigger click event on Next "submit" type button after entering email
-    else:
-        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="okta-signin-password"]')))
-        elementIdpPasswd = driver.find_element(By.XPATH, '//*[@id="okta-signin-password"]') # Identify Password input field
-        elementIdpPasswd.clear()
-        elementIdpPasswd.send_keys("Zz123456!") # Enter required password TODO: remove password before pushing to GitHub!!!!!!
-        driver.find_element(By.XPATH, '//*[@id="okta-signin-submit"]').click() # Trigger click event to submit password and email
-        #print(driver.title)
+        wdw.until(
+            EC.element_to_be_clickable((bycss, "#onetrust-accept-btn-handler"))
+        ).click()
+        wdw.until(
+            EC.element_to_be_clickable((bycss, sign_in_email_submit_id))
+        ).click()  # Trigger click event on Next "submit" type button after entering email
+    wdw.until(EC.presence_of_element_located((bycss, sign_in_password_id)))
+    driver.find_element(bycss, sign_in_password_id).clear()
+    driver.find_element(bycss, sign_in_password_id).send_keys(
+        password
+    )  # Enter required password TODO: remove password before pushing to GitHub!!!!!!
+    driver.find_element(
+        bycss, sign_in_password_submit_id
+    ).click()  # Trigger click event to submit password and email
+    # print(driver.title)
 
 
-def satreg():
-    WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="qc-id-header-register-button"]'))).click()
+def satreg(driver: WD.Chrome, wdw: WebDriverWait):
+    WebDriverWait(driver, 60).until(EC.element_to_be_clickable((bycss, satreg_btn_id))).click()
     try:
-        WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div/div[2]/div[2]/button'))).click()
+        wdw.until(EC.element_to_be_clickable((bycss, get_started_btn_id))).click()
     except TimeoutException:
         print("reloading")
         driver.get("https://mysat.collegeboard.org/dashboard")
-        satreg()
+        satreg(driver, wdw)
     except ElementClickInterceptedException:
-        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler"))).click()
-        WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div/div[2]/div[2]/button'))).click()
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="qc-id-personalinfo-button-graddateconfirm"]'))).click()
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="qc-id-personalinfo-button-gradeconfirm"]'))).click()
+        wdw.until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler"))).click()
+        wdw.until(EC.element_to_be_clickable((bycss, get_started_btn_id))).click()
+    wdw.until(EC.element_to_be_clickable((bycss, grade_date_confirm_id))).click()
+    wdw.until(EC.element_to_be_clickable((bycss, grade_confirm_id))).click()
     sleep(5)
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="continue-to-demographics-btn"]'))).click()
+    wdw.until(EC.element_to_be_clickable((bycss, continue_to_demos_id))).click()
     sleep(5)
-    WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="save-exit-demographics-btn"]'))).click()
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div[2]/div[2]/button[1]'))).click() # SAT Registration. Get Started Button
-    driver.find_element(By.XPATH, '//*[@id="qc-id-termsconditions-scrollbox-termsconditions"]').send_keys(Keys.END)
+    WebDriverWait(driver, 60).until(EC.element_to_be_clickable((bycss, save_demos_continue_id))).click()
+    wdw.until(EC.element_to_be_clickable((bycss, get_started_btn_scroll_id))).click()  # SAT Registration. Get Started Button
+    driver.find_element(bycss, tos_scrollbox_id).send_keys(Keys.END)
     sleep(5)
-    driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div[1]/div/div/div[2]/div/div/div/label/span').click() # Click the checkbox
-    WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="forward-btn"]'))).click() # Continue
-    WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="qc-id-selectdatecenter-testlocation-button-next"]'))).click()
+    driver.find_element(bycss, tos_accept_css).click()  # Click the checkbox
+    WebDriverWait(driver, 60).until(EC.element_to_be_clickable((bycss, tos_continue_id))).click()  # Continue
+    WebDriverWait(driver, 60).until(EC.element_to_be_clickable((bycss, select_location_next_id))).click()
 
 
-def refreshTestCenter():
+def refreshTestCenter(test_date, driver: WD.Chrome, wdw: WebDriverWait):
     sleep(2)
     if driver.title == "SAT Registration":
         driver.refresh()
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div[2]/div[2]/button[1]'))).click() # SAT Registration. Get Started Button
-    findtestcenter()
+    wdw.until(EC.element_to_be_clickable((bycss, get_started_btn_scroll_id))).click()  # Passes the scrollbox after a refresh
+    findtestcenter(test_date=test_date, driver=driver, wdw=wdw)
 
 
-def chooseTestDate():
+def chooseTestDate(test_date: str, driver: WD.Chrome, wdw: WebDriverWait):
     driver.execute_script("window.scrollTo(0,600)")
-    WebDriverWait(driver, 100).until(EC.element_to_be_clickable((By.ID, "qc-id-selectdatecenter-testdate-button-DEC-2"))).click() # No need for May 6, deadline passed
-    print("Dec 2 checked: ", driver.find_element(By.ID, 'qc-id-selectdatecenter-testdate-button-DEC-2').get_attribute('aria-current'))
-    WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="testdate-continue-button"]'))).click()
+    WebDriverWait(driver, 100).until(EC.element_to_be_clickable((bycss, test_date_button_id.format(test_date)))).click()
+    print(f"{test_date} clicked: ",driver.find_element(bycss, test_date_button_id.format(test_date)).get_attribute("aria-current"),)
+    wdw.until(EC.element_to_be_clickable((bycss, test_date_continue_id))).click()
 
 
-def findtestcenter():
+jun_3 = ""
+
+
+def findtestcenter(test_date: str, driver: WD.Chrome, wdw: WebDriverWait):
     global jun_3
-    WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.ID, 'qc-id-selectdatecenter-testcenter-international-button-search'))).click() # Find a test center
+    wdw.until(EC.element_to_be_clickable((bycss, select_diff_center_id))).click()
+    wdw.until(EC.element_to_be_clickable((bycss, find_centers_id))).click()  # Find a test center
     sleep(2)
-    driver.find_element(By.CLASS_NAME, 'toggle-btn').click()
-    jun_3 = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[2]/div/div[6]/div/div/div[3]/div/div[1]/div/div/div/div[4]/div/div/div/div[1]/div/div/div[3]/div/div[3]/div/div/div[4]/div[2]/div[1]').text # Save text
-    print("Dec 2: {0}, Checked: {1}".format(jun_3, ctime(time())))
+    wdw.until(EC.element_to_be_clickable((bycss, toggle_button_id))).click()
+    jun_3 = driver.find_element(bycss, avail_schools_count_css).text  # Save text
+    print(f"{test_date}: {jun_3}, Checked: {ctime(time())}")
+
 
 previous = 0
-def checkSchools(counter: str):
+
+
+def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
     global previous
-    Message = [f"December 2\nLast update: {ctime(time())}\n\n"]
-    if ((int)(counter) > 0):
-        print(driver.find_element(By.ID, 'undefined_next').get_attribute("aria-disabled"))
-        while (driver.find_element(By.ID,'undefined_next').get_attribute("aria-disabled") != "true"):
-            table = driver.find_element(By.CLASS_NAME, 'cb-table').find_element(By.TAG_NAME, 'tbody').find_elements(By.TAG_NAME, 'tr')
+    Message = [f"{test_date}\nLast update: {ctime(time())}\n\n"]
+    if (int)(counter) > 0:
+        print(driver.find_element(By.ID, "undefined_next").get_attribute("aria-disabled"))
+        while (driver.find_element(By.ID, "undefined_next").get_attribute("aria-disabled") != "true"):
+            table = (driver.find_element(By.CLASS_NAME, "cb-table").find_element(By.TAG_NAME, "tbody").find_elements(By.TAG_NAME, "tr"))
             for tr in table:
-                school_name = tr.find_element(By.CLASS_NAME, 'test-center-name').text
-                seat_available = tr.find_element(By.CLASS_NAME, 'seat-label').text
-                Message.append("{0} : {1}\n".format(school_name, seat_available))
-            driver.find_element(By.CLASS_NAME, 'cb-right').click()
-        table = driver.find_element(By.CLASS_NAME, 'cb-table').find_element(By.TAG_NAME, 'tbody').find_elements(By.TAG_NAME, 'tr')
+                school_name = tr.find_element(By.CLASS_NAME, "test-center-name").text
+                seat_available = tr.find_element(By.CLASS_NAME, "seat-label").text
+                Message.append(f"{school_name} : {seat_available}\n")
+            driver.find_element(By.CLASS_NAME, "cb-right").click()
+        table = (driver.find_element(By.CLASS_NAME, "cb-table").find_element(By.TAG_NAME, "tbody").find_elements(By.TAG_NAME, "tr"))
         for tr in table:
-            school_name = tr.find_element(By.CLASS_NAME, 'test-center-name').text
-            seat_available = tr.find_element(By.CLASS_NAME, 'seat-label').text
-            Message.append("{0} : {1}\n".format(school_name, seat_available))
+            school_name = tr.find_element(By.CLASS_NAME, "test-center-name").text
+            seat_available = tr.find_element(By.CLASS_NAME, "seat-label").text
+            Message.append(f"{school_name} : {seat_available}\n")
         print(previous)
         Message = "\n".join(Message)
         print(Message)
         if previous == 0:
-            print(tgmessage.telegram_sendmessage(976908358, Message))
-            print(tgmessage.telegram_sendmessage(5670908383, Message))
-            print(tgmessage.telegram_sendmessage(584098198, Message))
-            print(tgmessage.telegram_sendmessage(853226047, Message))
-            print(tgmessage.telegram_sendmessage(1278150481, Message))
-            print(tgmessage.telegram_sendmessage(809899348, Message))
-            print(tgmessage.telegram_sendmessage(853226047, Message))
-            print(tgmessage.telegram_sendmessage(716930078, Message))
+            print(notify(976908358, Message))  # Arif
+            print(notify(5670908383, Message))  # My chat
+            print(notify(584098198, Message))  # Mansur
+            print(notify(912056633, Message))  # Abdulaziz
+            print(notify(1278150481, Message))  # Rafail
+            # print(notify(809899348, Message))
+            # print(notify(853226047, Message))
+            # print(notify(716930078, Message))
             print("Email sent, sleeping...")
     previous = (int)(schoolcount.stripresult(jun_3))
-    
 
 
 op = Options()
@@ -206,5 +228,5 @@ def main(test_date: str, email: str, password: str):
             return -1
 
 
-main("NOV-4", "fabbasov693@gmail.com", "Zz123456!")
+main("DEC-2", "fabbasov693@gmail.com", "Zz123456!")
 # x.stop()
