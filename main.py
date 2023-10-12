@@ -164,7 +164,7 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
 
 
 op = Options()
-service = Service("/usr/bin/chromedriver")
+# service = Service("/usr/bin/chromedriver")
 # op.add_argument("--headless")
 op.add_argument("--disable-browser-side-navigation")
 op.add_argument("--no-sandbox")
@@ -181,7 +181,7 @@ def main(test_date: str, email: str, password: str):
     cberror(f"{ctime(time())}, {test_date} Bot started")
     while 1:
         try:
-            driver = WD.Chrome(service=service, options=op)
+            driver = WD.Chrome(options=op)
             print(111111)
             wdw = WebDriverWait(driver, 60)
             print(f"{test_date} Logging in")
