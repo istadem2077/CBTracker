@@ -7,8 +7,9 @@
 # pylint: disable=missing-function-docstring
 # pylint: disable=global-statement
 # pylint: disable=missing-timeout
-import requests
 import json
+import requests
+
 
 def notify(bot_chatID, bot_message:str):
 

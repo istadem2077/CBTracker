@@ -6,6 +6,7 @@
 # pylint: disable=missing-module-docstring
 # pylint: disable=missing-function-docstring
 # pylint: disable=global-statement
+from multiprocessing import Process
 from time import ctime, time, sleep
 import traceback
 from selenium import webdriver as WD
@@ -20,7 +21,7 @@ from selenium.common.exceptions import (
     ElementClickInterceptedException,
     NoSuchWindowException,
 )
-from multiprocessing import Process
+
 
 from tgmessage import notify, cberror, logs
 import schoolcount
@@ -164,7 +165,7 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
 
 
 op = Options()
-# service = Service("/usr/bin/chromedriver")
+service = Service("/usr/bin/chromedriver")
 # op.add_argument("--headless")
 op.add_argument("--disable-browser-side-navigation")
 op.add_argument("--no-sandbox")
@@ -231,7 +232,7 @@ def nov(test_date: str, email: str, password: str):
     cberror(f"{ctime(time())}, {test_date} Bot started")
     while 1:
         try:
-            driver = WD.Chrome(options=op)
+            driver = WD.Chrome(service=service, options=op)
             print(111111)
             wdw = WebDriverWait(driver, 60)
             print(f"{test_date} Logging in")
