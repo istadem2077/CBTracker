@@ -1,19 +1,43 @@
+# pylint: disable=bare-except
+# pylint: disable=wildcard-import
+# pylint: disable=unspecified-encoding
+# pylint: disable=invalid-name
+# pylint: disable=line-too-long
+# pylint: disable=missing-module-docstring
+# pylint: disable=missing-function-docstring
+# pylint: disable=global-statement
+from time import ctime, time, sleep
+import traceback
 from selenium import webdriver as WD
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import TimeoutException, NoSuchElementException, ElementClickInterceptedException
-from time import ctime, time, sleep
-import traceback
-from selenium import webdriver
-import tgmessage
+from selenium.webdriver.chrome.service import Service
+from selenium.common.exceptions import (
+    TimeoutException,
+    ElementClickInterceptedException,
+    NoSuchWindowException,
+)
+from multiprocessing import Process
+
+from tgmessage import notify, cberror, logs
 import schoolcount
 # from xvfbwrapper import Xvfb
- # Initiate Chrome Browser
-def loginMySAT():
-    driver.get("https://mysat.collegeboard.org/") # Login to website
+
+# x = Xvfb()
+# x.start()
+
+cberror(f"{ctime(time())}, Bot started")
+
+bycss = By.CSS_SELECTOR
+byxpath = By.XPATH
+
+
+# Initiate Chrome Browser
+def loginMySAT(driver: WD.Chrome, email, password, wdw: WebDriverWait):
+    driver.get("https://mysat.collegeboard.org/")  # Login to website
     driver.refresh()
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/main/div/div/div/div/div/div/div/div/div/a'))).click() # Click the first continue button
     sleep(2)
@@ -117,43 +141,70 @@ def checkSchools(counter: str):
     previous = (int)(schoolcount.stripresult(jun_3))
     
 
-op = webdriver.ChromeOptions()
-#op.add_argument("--headless")
+
+op = Options()
+service = Service("/usr/bin/chromedriver")
+# op.add_argument("--headless")
 op.add_argument("--disable-browser-side-navigation")
 op.add_argument("--no-sandbox")
 op.add_argument("--disable-dev-shm-usage")
-counter = 0
-#logincreds = [[]] # logincreds[iterator][0] - email; logincreds[iterator][1]
+op.add_argument("--start-maximized")
+# PROXY="socks5://localhost:9050"
+# op.add_argument(f"--proxy-server={PROXY}")
+# op.add_argument("--user-data-dir='/root/.config/google-chrome/Profile 1'")
+# logincreds = [[]] # logincreds[iterator][0] - email; logincreds[iterator][1]
 iterator = 0
-while(1):
-    try:
-        driver = WD.Chrome(options=op)
-        print("Logging in")
-        loginMySAT()
-        print("Entering registration")
-        satreg()
-        print("Choosing test date:")
-        chooseTestDate()
-        print("Finding test centers")
-        findtestcenter()
-        checkSchools(schoolcount.stripresult(jun_3))
-        while(1): # Infinite loop which breaks if an exception appears
-            try:
-                refreshTestCenter()
-            except:
-                break
-            else:
-                checkSchools(schoolcount.stripresult(jun_3))            
-        #sleep(60)
-        print("Restarting the loop")
-    except TimeoutException:
-        print(TimeoutException)
-        print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, {TimeoutException}"))
-        driver.quit()
-        continue
-    except:
-        print("Unknown error")
-        print(tgmessage.telegram_sendmessage(5670908383, f"{ctime(time())}, Dec error! Check server log!"))
-        print(traceback.format_exc())
-        driver.quit()
-        continue
+
+
+def main(test_date: str, email: str, password: str):
+    print(f"Starting {test_date}")
+    while 1:
+        try:
+            driver = WD.Chrome(service=service, options=op)
+            print(111111)
+            wdw = WebDriverWait(driver, 60)
+            print(f"{test_date} Logging in")
+            loginMySAT(driver=driver, email=email, password=password, wdw=wdw)
+            cberror(f"{ctime(time())}, Logged IN")
+            print(f"{test_date} Entering registration")
+            satreg(driver=driver, wdw=wdw)
+            print(f"{test_date} Choosing test date:")
+            chooseTestDate(test_date, driver=driver, wdw=wdw)
+            print(f"{test_date} Finding test centers")
+            findtestcenter(test_date=test_date, driver=driver, wdw=wdw)
+            checkSchools(schoolcount.stripresult(jun_3), test_date=test_date, driver=driver)
+            while 1:  # Infinite loop which breaks if an exception appears
+                try:
+                    refreshTestCenter(test_date=test_date, driver=driver, wdw=wdw)
+                except:
+                    traceback.print_exc()
+                    break
+                else:
+                    checkSchools(counter=schoolcount.stripresult(jun_3),test_date=test_date,driver=driver)
+            # sleep(60)
+            print(f"{test_date} Restarting the loop")
+        except TimeoutException:
+            print(TimeoutException)
+            print(cberror(f"{ctime(time())}, {TimeoutException}{test_date}"))
+            open("timeout.log", "w").write(traceback.format_exc())
+            logs('timeout.log')
+            driver.quit()
+            continue
+        except NoSuchWindowException:
+            print("Killing application")
+            return 1
+        except KeyboardInterrupt:
+            print("Killing application")
+            return 0
+        except:
+            print(f"{test_date} Unknown error")
+            print(cberror(f"{ctime(time())}, {test_date} Error! Check server!"))
+            print(traceback.format_exc())
+            open("./error.log", "w").write(traceback.format_exc())
+            logs('./error.log')
+            driver.quit()
+            return -1
+
+
+main("NOV-4", "fabbasov693@gmail.com", "Zz123456!")
+# x.stop()
