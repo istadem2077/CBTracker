@@ -229,7 +229,7 @@ def main(test_date: str, email: str, password: str):
 
 
 nov = Process(target=main, args=("NOV-4", "fabbasov693@gmail.com", "Zz123456!"))
-dec = Process(target=main, args=("DEC-2", "fabbasov693@gmail.com", "Zz123456!"))
+dec = Process(target=main, args=("DEC-2", "supcollegeboard@gmail.com", "Zz123456!"))
 nov.start()
 dec.start()
 nov.join()
