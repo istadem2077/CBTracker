@@ -204,6 +204,7 @@ def main(test_date: str, email: str, password: str):
                 else:
                     checkSchools(counter=schoolcount.stripresult(jun_3),test_date=test_date,driver=driver)
             # sleep(60)
+            driver.quit()
             print(f"{test_date} Restarting the loop")
         except TimeoutException:
             print(TimeoutException)
@@ -228,5 +229,5 @@ def main(test_date: str, email: str, password: str):
             return -1
 
 
-main("DEC-2", "fabbasov693@gmail.com", "Zz123456!")
+main("NOV-4", "fabbasov693@gmail.com", "Zz123456!")
 # x.stop()
