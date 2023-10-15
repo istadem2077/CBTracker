@@ -19,6 +19,7 @@ from selenium.common.exceptions import (
     TimeoutException,
     ElementClickInterceptedException,
     NoSuchWindowException,
+    WebDriverException
 )
 from multiprocessing import Process
 
@@ -205,7 +206,7 @@ def main(test_date: str, email: str, password: str):
                     checkSchools(counter=schoolcount.stripresult(jun_3),test_date=test_date,driver=driver)
             # sleep(60)
             driver.quit()
-            print(f"{test_date} Restarting the loop")
+            cberror(f"{test_date} Restarting the loop")
         except TimeoutException:
             print(TimeoutException)
             print(cberror(f"{ctime(time())}, {TimeoutException}{test_date}"))
@@ -219,6 +220,11 @@ def main(test_date: str, email: str, password: str):
         except KeyboardInterrupt:
             print("Killing application")
             return 0
+        except WebDriverException:
+            cberror(f"{ctime(time())}, {test_date} WebDriverException! Check server!")
+            open("./wdexc.log", "w").write(traceback.format_exc())
+            logs('./wdexc.log')
+            continue
         except:
             print(f"{test_date} Unknown error")
             print(cberror(f"{ctime(time())}, {test_date} Error! Check server!"))
