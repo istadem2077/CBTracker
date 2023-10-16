@@ -7,3 +7,6 @@ __pycache__/schoolcount.cpython-311.pyc
 __pycache__/tgmessage.cpython-311.pyc
 geckodriver
 __pycache__/elements_paths.cpython-311.pyc
+runner.sh
+.gitignore
+error.log

@@ -21,8 +21,6 @@ from selenium.common.exceptions import (
     NoSuchWindowException,
     WebDriverException
 )
-from multiprocessing import Process
-
 from tgmessage import notify, cberror, logs
 import schoolcount
 from elements_paths import *
@@ -137,7 +135,7 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
     Message = [f"{test_date}\nLast update: {ctime(time())}\n\n"]
     if (int)(counter) > 0:
         print(driver.find_element(By.ID, "undefined_next").get_attribute("aria-disabled"))
-        while (driver.find_element(By.ID, "undefined_next").get_attribute("aria-disabled") != "true"):
+        while driver.find_element(By.ID, "undefined_next").get_attribute("aria-disabled") != "true":
             table = (driver.find_element(By.CLASS_NAME, "cb-table").find_element(By.TAG_NAME, "tbody").find_elements(By.TAG_NAME, "tr"))
             for tr in table:
                 school_name = tr.find_element(By.CLASS_NAME, "test-center-name").text
@@ -171,7 +169,7 @@ service = Service("/usr/bin/chromedriver")
 op.add_argument("--disable-browser-side-navigation")
 op.add_argument("--no-sandbox")
 op.add_argument("--disable-dev-shm-usage")
-op.add_argument("--start-maximized")
+# op.add_argument("--start-maximized")
 # PROXY="socks5://localhost:9050"
 # op.add_argument(f"--proxy-server={PROXY}")
 # op.add_argument("--user-data-dir='/root/.config/google-chrome/Profile 1'")
@@ -200,7 +198,9 @@ def main(test_date: str, email: str, password: str):
                 try:
                     refreshTestCenter(test_date=test_date, driver=driver, wdw=wdw)
                 except:
-                    traceback.print_exc()
+                    cberror('Nested loop exited')
+                    open('nested.log', 'w').write(traceback.format_exc)
+                    logs('nested.log')
                     break
                 else:
                     checkSchools(counter=schoolcount.stripresult(jun_3),test_date=test_date,driver=driver)
