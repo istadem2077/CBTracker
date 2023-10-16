@@ -169,7 +169,7 @@ service = Service("/usr/bin/chromedriver")
 op.add_argument("--disable-browser-side-navigation")
 op.add_argument("--no-sandbox")
 op.add_argument("--disable-dev-shm-usage")
-op.add_argument("--start-maximized")
+# op.add_argument("--start-maximized")
 # PROXY="socks5://localhost:9050"
 # op.add_argument(f"--proxy-server={PROXY}")
 # op.add_argument("--user-data-dir='/root/.config/google-chrome/Profile 1'")
@@ -205,7 +205,7 @@ def main(test_date: str, email: str, password: str):
                 else:
                     checkSchools(counter=schoolcount.stripresult(jun_3),test_date=test_date,driver=driver)
             # sleep(60)
-            # driver.quit()
+            driver.quit()
             cberror(f"{test_date} Restarting the loop")
         except TimeoutException:
             print(TimeoutException)
