@@ -21,8 +21,6 @@ from selenium.common.exceptions import (
     NoSuchWindowException,
     WebDriverException
 )
-from multiprocessing import Process
-
 from tgmessage import notify, cberror, logs
 import schoolcount
 from elements_paths import *
@@ -137,7 +135,7 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
     Message = [f"{test_date}\nLast update: {ctime(time())}\n\n"]
     if (int)(counter) > 0:
         print(driver.find_element(By.ID, "undefined_next").get_attribute("aria-disabled"))
-        while (driver.find_element(By.ID, "undefined_next").get_attribute("aria-disabled") != "true"):
+        while driver.find_element(By.ID, "undefined_next").get_attribute("aria-disabled") != "true":
             table = (driver.find_element(By.CLASS_NAME, "cb-table").find_element(By.TAG_NAME, "tbody").find_elements(By.TAG_NAME, "tr"))
             for tr in table:
                 school_name = tr.find_element(By.CLASS_NAME, "test-center-name").text
@@ -200,12 +198,14 @@ def main(test_date: str, email: str, password: str):
                 try:
                     refreshTestCenter(test_date=test_date, driver=driver, wdw=wdw)
                 except:
-                    traceback.print_exc()
+                    cberror('Exited nested loop')
+                    open('nested.log', 'w').write(traceback.format_exc)
+                    logs('nested.log')
                     break
                 else:
                     checkSchools(counter=schoolcount.stripresult(jun_3),test_date=test_date,driver=driver)
             # sleep(60)
-            driver.quit()
+            # driver.quit()
             cberror(f"{test_date} Restarting the loop")
         except TimeoutException:
             print(TimeoutException)
