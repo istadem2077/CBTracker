@@ -157,7 +157,7 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
             print(notify(912056633, Message))  # Abdulaziz
             print(notify(1278150481, Message)) # Rafail
             # print(notify(809899348, Message))
-            # print(notify(881116606, Message)) # Tamerlan
+            print(notify(881116606, Message)) # Tamerlan
             # print(notify(853226047, Message))
             # print(notify(716930078, Message))
             print("Email sent, sleeping...")
@@ -236,5 +236,5 @@ def main(test_date: str, email: str, password: str):
             return -1
 
 
-main("DEC-2", "clickclick0063@gmail.com", "Zz123456!")
+main("DEC-2", "emilrasulov213@mail.ru", "Zz123456!")
 # x.stop()
