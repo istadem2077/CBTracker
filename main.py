@@ -158,6 +158,7 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
             print(notify(1278150481, Message))  # Rafail
             # print(notify(809899348, Message))
             # print(notify(853226047, Message))
+            print(notify(881116606, Message))
             # print(notify(716930078, Message))
             print("Email sent, sleeping...")
     previous = (int)(schoolcount.stripresult(jun_3))
@@ -235,5 +236,5 @@ def main(test_date: str, email: str, password: str):
             return -1
 
 
-main("MAR-9", "mansur.ismayilov@bk.ru", "Zz123456!")
+main("MAR-9", "rasulnarimanov2003@mail.ru", "Zz123456!")
 # x.stop()
