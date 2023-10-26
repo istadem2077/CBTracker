@@ -158,6 +158,7 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
             print(notify(1278150481, Message)) # Rafail
             # print(notify(809899348, Message))
             print(notify(881116606, Message)) # Tamerlan
+            print(notify(881389465, Message))
             # print(notify(853226047, Message))
             # print(notify(716930078, Message))
             print("Email sent, sleeping...")
