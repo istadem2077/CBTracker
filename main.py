@@ -159,7 +159,8 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
             # print(notify(809899348, Message))
             # print(notify(853226047, Message))
             print(notify(881116606, Message))
-            print(notify(881389465, Message))
+            sleep(5)
+            print(notify(881389465, Message)) # Amin
             # print(notify(716930078, Message))
             print("Email sent, sleeping...")
     previous = (int)(schoolcount.stripresult(jun_3))
