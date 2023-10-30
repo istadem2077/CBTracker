@@ -238,5 +238,5 @@ def main(test_date: str, email: str, password: str):
             return -1
 
 
-main("MAR-9", "rafikvaliyev213@mail.ru", "Zz123456!")
+main("MAR-9", "valeyqarayev213@mail.ru", "Zz123456!")
 # x.stop()
