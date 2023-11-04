@@ -128,10 +128,11 @@ def findtestcenter(test_date: str, driver: WD.Chrome, wdw: WebDriverWait):
 
 
 previous = 0
-
+previous_prev = 0
 
 def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
     global previous
+    global previous_prev
     Message = [f"{test_date}\nLast update: {ctime(time())}\n\n"]
     if (int)(counter) > 0:
         print(driver.find_element(By.ID, "undefined_next").get_attribute("aria-disabled"))
@@ -150,7 +151,7 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
         print(previous)
         Message = "\n".join(Message)
         print(Message)
-        if previous == 0:
+        if counter != previous:
             print(notify(976908358, Message))  # Arif
             print(notify(5670908383, Message))  # My chat
             print(notify(584098198, Message))  # Mansur
@@ -164,7 +165,6 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
             # print(notify(716930078, Message))
             print("Email sent, sleeping...")
     previous = (int)(schoolcount.stripresult(jun_3))
-
 
 op = Options()
 service = Service("/usr/bin/chromedriver")
