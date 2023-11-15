@@ -119,10 +119,7 @@ jun_3 = ""
 
 def findtestcenter(test_date: str, driver: WD.Chrome, wdw: WebDriverWait):
     global jun_3
-    try:
-        wdw.until(EC.element_to_be_clickable((bycss, select_diff_center_id))).click()
-    except:
-        pass
+    wdw.until(EC.element_to_be_clickable((bycss, select_diff_center_id))).click()
     wdw.until(EC.element_to_be_clickable((bycss, find_centers_id))).click()  # Find a test center
     sleep(2)
     wdw.until(EC.element_to_be_clickable((bycss, toggle_button_id))).click()
@@ -162,11 +159,10 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
             print(notify(912056633, Message))  # Abdulaziz
             print(notify(1278150481, Message)) # Rafail
             # print(notify(809899348, Message))
-            # print(notify(881116606, Message)) # Tamerlan
-            # print(notify(853226047, Message))
-            print(notify(881116606, Message))
+            print(notify(881116606, Message)) # Tamerlan
             sleep(5)
             print(notify(881389465, Message)) # Amin
+            # print(notify(853226047, Message))
             # print(notify(716930078, Message))
             print("Email sent, sleeping...")
     previous = (int)(schoolcount.stripresult(jun_3))
@@ -187,10 +183,11 @@ iterator = 0
 
 def main(test_date: str, email: str, password: str):
     print(f"Starting {test_date}")
-    driver = WD.Chrome(service=service, options=op)
-    wdw = WebDriverWait(driver, 60)
     while 1:
         try:
+            driver = WD.Chrome(service=service, options=op)
+            print(111111)
+            wdw = WebDriverWait(driver, 60)
             print(f"{test_date} Logging in")
             loginMySAT(driver=driver, email=email, password=password, wdw=wdw)
             cberror(f"{ctime(time())}, Logged IN")
@@ -202,15 +199,24 @@ def main(test_date: str, email: str, password: str):
             findtestcenter(test_date=test_date, driver=driver, wdw=wdw)
             checkSchools(schoolcount.stripresult(jun_3), test_date=test_date, driver=driver)
             while 1:  # Infinite loop which breaks if an exception appears
-                refreshTestCenter(test_date=test_date, driver=driver, wdw=wdw)
-                checkSchools(counter=schoolcount.stripresult(jun_3),test_date=test_date,driver=driver)
+                try:
+                    refreshTestCenter(test_date=test_date, driver=driver, wdw=wdw)
+                except:
+                    cberror('Exited nested loop')
+                    open('nested.log', 'w').write(traceback.format_exc)
+                    logs('nested.log')
+                    break
+                else:
+                    checkSchools(counter=schoolcount.stripresult(jun_3),test_date=test_date,driver=driver)
             # sleep(60)
-            # cberror(f"{test_date} Restarting the loop")
+            driver.quit()
+            cberror(f"{test_date} Restarting the loop")
         except TimeoutException:
             print(TimeoutException)
             print(cberror(f"{ctime(time())}, {TimeoutException}{test_date}"))
             open("timeout.log", "w").write(traceback.format_exc())
             logs('timeout.log')
+            driver.quit()
             continue
         except NoSuchWindowException:
             print("Killing application")
@@ -233,7 +239,5 @@ def main(test_date: str, email: str, password: str):
             return -1
 
 
-if __name__=="__main__":
-    while 1:
-        main("MAR-9", "itagizade@e.email", "Zz123456!")
+main("DEC-2", "mansqarayev@mail.ru", "Zz123456!")
 # x.stop()
