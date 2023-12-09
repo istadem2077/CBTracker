@@ -116,16 +116,18 @@ def chooseTestDate(test_date: str, driver: WD.Chrome, wdw: WebDriverWait):
 
 jun_3 = ""
 
-
 def findtestcenter(test_date: str, driver: WD.Chrome, wdw: WebDriverWait):
     global jun_3
     wdw.until(EC.element_to_be_clickable((bycss, select_diff_center_id))).click()
+    try:
+        wdw.until(EC.element_to_be_clickable((bycss, select_diff_center_id))).click()
+    except:
+        pass
     wdw.until(EC.element_to_be_clickable((bycss, find_centers_id))).click()  # Find a test center
     sleep(2)
     wdw.until(EC.element_to_be_clickable((bycss, toggle_button_id))).click()
     jun_3 = driver.find_element(bycss, avail_schools_count_css).text  # Save text
     print(f"{test_date}: {jun_3}, Checked: {ctime(time())}")
-
 
 previous = 0
 
