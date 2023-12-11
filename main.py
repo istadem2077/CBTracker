@@ -185,11 +185,10 @@ iterator = 0
 
 def main(test_date: str, email: str, password: str):
     print(f"Starting {test_date}")
+    driver = WD.Chrome(service=service, options=op)
+    wdw = WebDriverWait(driver, 60)
     while 1:
         try:
-            driver = WD.Chrome(service=service, options=op)
-            print(111111)
-            wdw = WebDriverWait(driver, 60)
             print(f"{test_date} Logging in")
             loginMySAT(driver=driver, email=email, password=password, wdw=wdw)
             cberror(f"{ctime(time())}, Logged IN")
@@ -204,13 +203,12 @@ def main(test_date: str, email: str, password: str):
                 refreshTestCenter(test_date=test_date, driver=driver, wdw=wdw)
                 checkSchools(counter=schoolcount.stripresult(jun_3),test_date=test_date,driver=driver)
             # sleep(60)
-            cberror(f"{test_date} Restarting the loop")
+            # cberror(f"{test_date} Restarting the loop")
         except TimeoutException:
             print(TimeoutException)
             print(cberror(f"{ctime(time())}, {TimeoutException}{test_date}"))
             open("timeout.log", "w").write(traceback.format_exc())
             logs('timeout.log')
-            driver.quit()
             continue
         except NoSuchWindowException:
             print("Killing application")
@@ -233,5 +231,7 @@ def main(test_date: str, email: str, password: str):
             return -1
 
 
-main("MAR-9", "itagizade@e.email", "Zz123456!")
+if __name__=="__main__":
+    while 1:
+        main("MAR-9", "itagizade@e.email", "Zz123456!")
 # x.stop()
