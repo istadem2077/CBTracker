@@ -116,9 +116,9 @@ def chooseTestDate(test_date: str, driver: WD.Chrome, wdw: WebDriverWait):
 
 jun_3 = ""
 
+
 def findtestcenter(test_date: str, driver: WD.Chrome, wdw: WebDriverWait):
     global jun_3
-    wdw.until(EC.element_to_be_clickable((bycss, select_diff_center_id))).click()
     try:
         wdw.until(EC.element_to_be_clickable((bycss, select_diff_center_id))).click()
     except:
@@ -129,11 +129,12 @@ def findtestcenter(test_date: str, driver: WD.Chrome, wdw: WebDriverWait):
     jun_3 = driver.find_element(bycss, avail_schools_count_css).text  # Save text
     print(f"{test_date}: {jun_3}, Checked: {ctime(time())}")
 
+
 previous = 0
+
 
 def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
     global previous
-    school_name = ''
     Message = [f"{test_date}\nLast update: {ctime(time())}\n\n"]
     if (int)(counter) > 0:
         print(driver.find_element(By.ID, "undefined_next").get_attribute("aria-disabled"))
@@ -152,22 +153,21 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
         print(previous)
         Message = "\n".join(Message)
         print(Message)
-        if (int)(counter) == 1 and school_name == 'Nakhchivan State University':
-            return "Peyser NSU"
         if previous == 0:
             print(notify(976908358, Message))  # Arif
             print(notify(5670908383, Message))  # My chat
             print(notify(584098198, Message))  # Mansur
             print(notify(912056633, Message))  # Abdulaziz
-            print(notify(1278150481, Message)) # Rafail
+            print(notify(1278150481, Message))  # Rafail
             # print(notify(809899348, Message))
-            print(notify(881116606, Message)) # Tamerlan
+            # print(notify(853226047, Message))
+            print(notify(881116606, Message))
             sleep(5)
             print(notify(881389465, Message)) # Amin
-            # print(notify(853226047, Message))
             # print(notify(716930078, Message))
             print("Email sent, sleeping...")
     previous = (int)(schoolcount.stripresult(jun_3))
+
 
 op = Options()
 service = Service("/usr/bin/chromedriver")
@@ -185,11 +185,10 @@ iterator = 0
 
 def main(test_date: str, email: str, password: str):
     print(f"Starting {test_date}")
+    driver = WD.Chrome(service=service, options=op)
+    wdw = WebDriverWait(driver, 60)
     while 1:
         try:
-            driver = WD.Chrome(service=service, options=op)
-            print(111111)
-            wdw = WebDriverWait(driver, 60)
             print(f"{test_date} Logging in")
             loginMySAT(driver=driver, email=email, password=password, wdw=wdw)
             cberror(f"{ctime(time())}, Logged IN")
@@ -204,13 +203,12 @@ def main(test_date: str, email: str, password: str):
                 refreshTestCenter(test_date=test_date, driver=driver, wdw=wdw)
                 checkSchools(counter=schoolcount.stripresult(jun_3),test_date=test_date,driver=driver)
             # sleep(60)
-            cberror(f"{test_date} Restarting the loop")
+            # cberror(f"{test_date} Restarting the loop")
         except TimeoutException:
             print(TimeoutException)
             print(cberror(f"{ctime(time())}, {TimeoutException}{test_date}"))
             open("timeout.log", "w").write(traceback.format_exc())
             logs('timeout.log')
-            driver.quit()
             continue
         except NoSuchWindowException:
             print("Killing application")
@@ -233,5 +231,7 @@ def main(test_date: str, email: str, password: str):
             return -1
 
 
-main("MAY-4", "babayevarif1806@gmail.com", "Zz123456!")
+if __name__=="__main__":
+    while 1:
+        main("MAY-4", "babayevarif1806@gmail.com", "Zz123456!")
 # x.stop()
