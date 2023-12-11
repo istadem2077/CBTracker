@@ -201,15 +201,8 @@ def main(test_date: str, email: str, password: str):
             findtestcenter(test_date=test_date, driver=driver, wdw=wdw)
             checkSchools(schoolcount.stripresult(jun_3), test_date=test_date, driver=driver)
             while 1:  # Infinite loop which breaks if an exception appears
-                try:
-                    refreshTestCenter(test_date=test_date, driver=driver, wdw=wdw)
-                except:
-                    cberror('Nested loop exited')
-                    open('nested.log', 'w').write(traceback.format_exc)
-                    logs('nested.log')
-                    break
-                else:
-                    checkSchools(counter=schoolcount.stripresult(jun_3),test_date=test_date,driver=driver)
+                refreshTestCenter(test_date=test_date, driver=driver, wdw=wdw)
+                checkSchools(counter=schoolcount.stripresult(jun_3),test_date=test_date,driver=driver)
             # sleep(60)
             cberror(f"{test_date} Restarting the loop")
         except TimeoutException:
