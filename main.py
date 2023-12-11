@@ -211,7 +211,6 @@ def main(test_date: str, email: str, password: str):
                 else:
                     checkSchools(counter=schoolcount.stripresult(jun_3),test_date=test_date,driver=driver)
             # sleep(60)
-            driver.quit()
             cberror(f"{test_date} Restarting the loop")
         except TimeoutException:
             print(TimeoutException)
