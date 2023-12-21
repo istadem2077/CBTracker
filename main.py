@@ -220,7 +220,7 @@ def main(test_date: str, email: str, password: str):
             cberror(f"{ctime(time())}, {test_date} WebDriverException! Check server!")
             open("./wdexc.log", "w").write(traceback.format_exc())
             logs('./wdexc.log')
-            continue
+            return -1
         except:
             print(f"{test_date} Unknown error")
             print(cberror(f"{ctime(time())}, {test_date} Error! Check server!"))
@@ -232,6 +232,5 @@ def main(test_date: str, email: str, password: str):
 
 
 if __name__=="__main__":
-    while 1:
-        main("MAY-4", "babayevarif1806@gmail.com", "Zz123456!")
+    main("MAY-4", "babayevarif1806@gmail.com", "Zz123456!")
 # x.stop()
