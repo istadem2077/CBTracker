@@ -40,6 +40,8 @@ byxpath = By.XPATH
 def loginMySAT(driver: WD.Chrome, email, password, wdw: WebDriverWait):
     driver.get("https://mysat.collegeboard.org/")  # Login to website
     driver.refresh()
+    if driver.title == "My SAT Home Page":
+        return 0
     WebDriverWait(driver, 20).until(
         EC.element_to_be_clickable((bycss, sign_in_btn_id))
     ).click()  # Click the first continue button
