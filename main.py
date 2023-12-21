@@ -209,7 +209,6 @@ def main(test_date: str, email: str, password: str):
             print(cberror(f"{ctime(time())}, {TimeoutException}{test_date}"))
             open("timeout.log", "w").write(traceback.format_exc())
             logs('timeout.log')
-            driver.quit()
             continue
         except NoSuchWindowException:
             print("Killing application")
