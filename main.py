@@ -154,6 +154,7 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
         Message = "\n".join(Message)
         print(Message)
         if previous == 0:
+            print(notify(906238592, Message)) # Rasul Landau Vahid
             print(notify(976908358, Message))  # Arif
             print(notify(5670908383, Message))  # My chat
             print(notify(584098198, Message))  # Mansur
@@ -161,7 +162,7 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
             print(notify(1278150481, Message))  # Rafail
             # print(notify(809899348, Message))
             # print(notify(853226047, Message))
-            print(notify(881116606, Message))
+            print(notify(881116606, Message)) # Tamerlan
             sleep(1)
             print(notify(881389465, Message)) # Amin
             # print(notify(716930078, Message))
