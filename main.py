@@ -160,13 +160,13 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
         if (int)(counter) == 1 and school_name == 'Nakhchivan State University':
             return "Peyser NSU"
         if previous == 0:
+            print(notify(906238592, Message)) # Rasul Landau Vahid
             print(notify(976908358, Message))  # Arif
             print(notify(5670908383, Message))  # My chat
             print(notify(584098198, Message))  # Mansur
             print(notify(912056633, Message))  # Abdulaziz
             print(notify(1278150481, Message)) # Rafail
             print(notify(881116606, Message)) # Tamerlan
-            print(notify(906238592, Message)) # Rasul Landau Vahid
             sleep(1)
             print(notify(881389465, Message)) # Amin
             print("Email sent, sleeping...")
