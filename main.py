@@ -235,5 +235,5 @@ def main(test_date: str, email: str, password: str):
 
 
 if __name__=="__main__":
-    main('MAR-9', 'itagizade@e.email', "Zz123456!")
+    main('JUN-1', 'malizade2559@gmail.com', "Zz123456!")
 # x.stop()
