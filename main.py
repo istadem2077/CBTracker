@@ -154,11 +154,11 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
             school_name = tr.find_element(By.CLASS_NAME, "test-center-name").text
             seat_available = tr.find_element(By.CLASS_NAME, "seat-label").text
             Message.append(f"{school_name} : {seat_available}\n")
-        print(previous)
+        # print(previous)
         Message = "\n".join(Message)
-        print(Message)
-        if (int)(counter) == 1 and school_name == 'Nakhchivan State University':
-            return "Peyser NSU"
+        # print(Message)
+        # if (int)(counter) == 1 and school_name == 'Nakhchivan State University':
+        #     return print(cberror(5670908383,"Peyser NSU")) 
         if previous == 0:
             print(notify(906238592, Message)) # Rasul Landau Vahid
             print(notify(976908358, Message))  # Arif
