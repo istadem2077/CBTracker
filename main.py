@@ -157,8 +157,8 @@ def checkSchools(counter: str, test_date: str, driver: WD.Chrome):
         # print(previous)
         Message = "\n".join(Message)
         # print(Message)
-        # if (int)(counter) == 1 and school_name == 'Nakhchivan State University':
-        #     return print(cberror(5670908383,"Peyser NSU")) 
+        if (int)(counter) == 1 and school_name == 'Nakhchivan State University':
+            return print(cberror(5670908383,"Peyser NSU")) 
         if previous == 0:
             print(notify(906238592, Message)) # Rasul Landau Vahid
             print(notify(976908358, Message))  # Arif
