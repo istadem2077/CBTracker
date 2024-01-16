@@ -187,6 +187,7 @@ iterator = 0
 
 
 def main(test_date: str, email: str, password: str):
+    global previous
     print(f"Starting {test_date}")
     driver = WD.Chrome(service=service, options=op)
     wdw = WebDriverWait(driver, 60)
@@ -207,11 +208,13 @@ def main(test_date: str, email: str, password: str):
                 checkSchools(counter=schoolcount.stripresult(jun_3),test_date=test_date,driver=driver)
             # sleep(60)
             # cberror(f"{test_date} Restarting the loop")
+            previous = 0
         except TimeoutException:
             print(TimeoutException)
             print(cberror(f"{ctime(time())}, {TimeoutException}{test_date}"))
             open("timeout.log", "w").write(traceback.format_exc())
             logs('timeout.log')
+            previous = 0
             continue
         except NoSuchWindowException:
             print("Killing application")
