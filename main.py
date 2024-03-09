@@ -90,7 +90,11 @@ def satreg(driver: WD.Chrome, wdw: WebDriverWait):
     except ElementClickInterceptedException:
         wdw.until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler"))).click()
         wdw.until(EC.element_to_be_clickable((bycss, get_started_btn_id))).click()
-    wdw.until(EC.element_to_be_clickable((bycss, grade_date_confirm_id))).click()
+    try:
+        wdw.until(EC.element_to_be_clickable((bycss, grade_date_confirm_id))).click()
+    except ElementClickInterceptedException:
+        wdw.until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler"))).click()
+        wdw.until(EC.element_to_be_clickable((bycss, grade_date_confirm_id))).click()
     wdw.until(EC.element_to_be_clickable((bycss, grade_confirm_id))).click()
     sleep(5)
     wdw.until(EC.element_to_be_clickable((bycss, continue_to_demos_id))).click()
